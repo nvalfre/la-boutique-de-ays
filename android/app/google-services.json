@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "989577719184",
+    "project_id": "la-boutique-ays-app",
+    "storage_bucket": "la-boutique-ays-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989577719184:android:7ff20e55048bb72a2d9715",
+        "android_client_info": {
+          "package_name": "com.nv.la_boutique_de_a_y_s_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "989577719184-u2rvcfmifd6vo38633fvu9lr16u6apat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh2Tb5PQn08Ig4MpuD68_2EcX3BvRopvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "989577719184-u2rvcfmifd6vo38633fvu9lr16u6apat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
