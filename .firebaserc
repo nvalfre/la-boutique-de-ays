@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "la-boutique-ays-app"
-  }
+    "default": "la-boutique-ays-app",
+    "staging": "la-boutique-ays-app"
+  },
+  "targets": {}
 }
