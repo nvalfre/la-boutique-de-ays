@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
             return SomethingWentWrong();
           }
 
+
           if (snapshot.connectionState == ConnectionState.done) {
             return AuthScreen();
           }
