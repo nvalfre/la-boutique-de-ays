@@ -91,6 +91,8 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  Future<void> createUser(UserCredential authResult, Map<String, String> newUser) => FirebaseFirestore.instance.collection('users').doc(authResult.user.uid).set(newUser);
+
   void pushHome(UserCredential authResult) {
     Navigator.pushReplacement(
       context,

@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:la_boutique_de_a_y_s_app/router.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/auth_screen.dart';
-import 'package:la_boutique_de_a_y_s_app/screens/chat_screen.dart';
+import 'package:la_boutique_de_a_y_s_app/router_constants.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,21 +31,26 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: FutureBuilder(
-        future: _initialization,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return SomethingWentWrong();
-          }
+      onGenerateRoute: RouterMapping.generateRoute,
+      initialRoute: homeRoute,
+    );
+  }
+
+  FutureBuilder<FirebaseApp> homeRoutes() {
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return SomethingWentWrong();
+        }
 
 
-          if (snapshot.connectionState == ConnectionState.done) {
-            return AuthScreen();
-          }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AuthScreen();
+        }
 
-          return CircularProgressIndicator();
-        },
-      ),
+        return CircularProgressIndicator();
+      },
     );
   }
 

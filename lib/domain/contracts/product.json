@@ -1,0 +1,13 @@
+{
+  "id": "dfg345",
+  "price": 10,
+  "name": "product name",
+  "description": "product description",
+  "attributes": {
+    "size": "",
+    "category*-": "",
+    "supplier": "",
+    "brand": "Proyec",
+    "year": 2021
+  }
+}
