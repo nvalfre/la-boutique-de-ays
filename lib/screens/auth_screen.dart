@@ -5,9 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:la_boutique_de_a_y_s_app/screens/splash_screen.dart';
+import '../widgets/auth/auth_form.dart';
 
-import 'package:la_boutique_de_a_y_s_app/widgets/auth/auth_form.dart';
+import 'splash_screen.dart';
+
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -48,23 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('user_image')
-            .child(authResult.user.uid + '.jpg');
-
-        await ref.putFile(image);
-
-        final url = await ref.getDownloadURL();
-        final usersCollection = FirebaseFirestore.instance.collection('users');
-        var newUser = {
-            authResult.user.uid: {
-              'username': username,
-              'email': email,
-              'image_url': url,
-            }
-          };
-        await usersCollection.add(newUser);
+        await addUser(authResult, image, username, email);
         pushHome(authResult);
       }
     } on PlatformException catch (err) {
@@ -89,6 +74,26 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> addUser(UserCredential authResult, File image, String username, String email) async {
+     final ref = FirebaseStorage.instance
+        .ref()
+        .child('user_image')
+        .child(authResult.user.uid + '.jpg');
+
+    await ref.putFile(image);
+
+    final url = await ref.getDownloadURL();
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+    var newUser = {
+        authResult.user.uid: {
+          'username': username,
+          'email': email,
+          'image_url': url,
+        }
+      };
+    await usersCollection.add(newUser);
   }
 
   Future<void> createUser(UserCredential authResult, Map<String, String> newUser) => FirebaseFirestore.instance.collection('users').doc(authResult.user.uid).set(newUser);

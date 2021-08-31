@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 User newUser(String id, String email, String name, String userStatus,
-    String userRole) => User.newUser(id, email, name, userStatus, userRole);
+    String userRole, String avatar) => User.newUser(id, email, name, userStatus, userRole, avatar);
 User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
@@ -14,6 +14,7 @@ class User {
     this.name,
     this.userStatus,
     this.userRole,
+    this.avatar,
   });
 
   String id;
@@ -21,6 +22,7 @@ class User {
   String name;
   String userStatus;
   String userRole;
+  String avatar;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -28,16 +30,18 @@ class User {
         name: json["name"],
         userStatus: json["user_status"],
         userRole: json["user_role"],
+        avatar: json["avatar"],
       );
 
   factory User.newUser(String id, String email, String name, String userStatus,
-          String userRole) =>
+          String userRole, String avatar) =>
       User(
         id: id,
         email: email,
         name: name,
         userStatus: userStatus,
         userRole: userRole,
+        avatar: avatar,
       );
 
   factory User.fromQuerySnapshot(QuerySnapshot snap) {
@@ -48,6 +52,7 @@ class User {
       name:  document.data()['name'],
       userStatus:  document.data()['userStatus'],
       userRole:  document.data()['userRole'],
+      avatar:  document.data()['avatar'],
     );
   }
 
@@ -57,5 +62,6 @@ class User {
     "name": name,
     "user_status": userStatus,
     "user_role": userRole,
+    "avatar": avatar,
   };
 }

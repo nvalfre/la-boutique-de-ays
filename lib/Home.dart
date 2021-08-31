@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:la_boutique_de_a_y_s_app/providers/authentication_service_impl.dart';
 
 import 'domain/enums/auth_status.dart';
+import 'providers/authentication_provider.dart';
+import 'router/router_constants.dart';
 
 class Home extends StatefulWidget {
   Home();
@@ -24,11 +26,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     new Future.delayed(
-        const Duration(milliseconds: 2500), () => {currentUser()});
+        const Duration(milliseconds: 1500), () => {currentUser()});
   }
 
   Future<void> currentUser() async {
-    var currentUser = _authProvider.getCurrentUser();
+    //var currentUser = _authProvider.getCurrentUser();
 
     setState(() {
       if (currentUser != null) {
@@ -75,8 +77,8 @@ class _HomeState extends State<Home> {
             height: 50,
           ),
           FadeInImage(
-            image: AssetImage('assets/logo/Logo-Curvas.png'),
-            placeholder: AssetImage('assets/images/jar-loading.gif'),
+            image: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
+            placeholder: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
             fit: BoxFit.contain,
             fadeInDuration: Duration(seconds: 1),
             width: 275,
@@ -125,20 +127,27 @@ class _HomeState extends State<Home> {
   }
 
   void switchStatement() {
+    const delay = Duration(milliseconds: 500);
     switch (authStatus) {
       case AuthStatus.NOT_DETERMINED:
         break;
+      case AuthStatus.ANONYMOUS:
+        Future.delayed(
+          delay,
+          () => Navigator.pushReplacementNamed(context, guestFeedRoute),
+        );
+        break;
       case AuthStatus.NOT_LOGGED_IN:
         Future.delayed(
-          const Duration(seconds: 2),
-          () => Navigator.pushReplacementNamed(context, 'login'),
+          delay,
+          () => Navigator.pushReplacementNamed(context, homeRoute),
         );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
           Future.delayed(
-            const Duration(seconds: 2),
-            () => Navigator.pushReplacementNamed(context, 'root'),
+            delay,
+            () => Navigator.pushReplacementNamed(context, userFeedRoute),
           );
         }
         break;

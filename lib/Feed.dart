@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_boutique_de_a_y_s_app/providers/authentication_service_impl.dart';
 
-import 'domain/enums/auth_status.dart';
 
 class Feed extends StatefulWidget {
   Feed();

@@ -18,6 +18,9 @@ class Provider extends InheritedWidget {
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
+  static Provider getProvider(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<Provider>();
+
   static AuthBloc authBloc(BuildContext context) =>
-      (context.dependOnInheritedWidgetOfExactType<Provider>())._authBloc;
+      getProvider(context)._authBloc;
 }
