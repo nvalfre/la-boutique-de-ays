@@ -1,16 +1,53 @@
 # la_boutique_de_a_y_s_app
+## La boutique App - Prodmerce
 
-A new Flutter application.
+Plataforma de visualización - ecomerce de productos para distintas plataformas a demanda.
+WIP
 
-## Getting Started
+Planned Features:
+    ## Firebase firestore
+    User authentication & roles: GUEST, BUYER, ADMIN
+    Android, Web & iOS
 
-This project is a starting point for a Flutter application.
+    ## ROLES BACKEND FEATURES
+    ### ADMIN
+    Prod CRUD form
+    Categories CRUD form
+    AppMetadata CRUD form
+    Campaign CRUD form
 
-A few resources to get you started if this is your first Flutter project:
+    ### BUYER
+    Direct Order CHO
+    Cart CHO
+    MP CHO
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+    ### GUEST & BUYER
+    User register
+    User login
+    User home navigation
+    Prod details
+    Prod Listing
+    Fav Products
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    Category CRUD form
+    Category Listing
+    Category Filter
+
+    ## VIEWS
+    ### cart user buyer CRUD
+    ### Splash view
+    ### Home Buyer & Guest View
+        Only buyer can buy checkout. Appbar, deals banner, category card swipper filter, product grid
+    ### Product Detail Buyer & Guest View
+    ### Product Detail Admin Create/Edit Form View
+    ### Home Admin
+    Only admin can edit sensitive business data.
+    ### User Profile
+    ### Navigation drawer
+     Navigations to home, search & categories. Login / Logout - Register.
+    ### Serach bar for product
+    ### Order view
+    ### Cart view
+
+
+
