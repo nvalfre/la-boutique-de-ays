@@ -18,7 +18,7 @@ class AuthBloc with PasswordValidator, EmailValidator, NameValidator {
 
   final _loadingController = new BehaviorSubject<bool>();
 
-  //TODO Migrate to bloc service
+  //TODO Migrate to auth bloc service
   final _authProvider = AuthProvider.getState();
 
   //final _userServiceImpl = UserServiceImpl.getState();
