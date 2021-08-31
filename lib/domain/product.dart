@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'attributes.dart';
 // Rueda, Bozu, Matt x3 4, 6, 10, Rollo, Rodillo, Zafu
 

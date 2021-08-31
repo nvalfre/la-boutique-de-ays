@@ -1,25 +1,22 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:la_boutique_de_a_y_s_app/providers/authentication_service_impl.dart';
 
 import 'domain/enums/auth_status.dart';
 import 'providers/authentication_provider.dart';
 import 'router/router_constants.dart';
 
-class Home extends StatefulWidget {
-  Home();
+class LoginStrategy extends StatefulWidget {
+  LoginStrategy();
 
   @override
-  State<StatefulWidget> createState() => new _HomeState();
+  State<StatefulWidget> createState() => new _LoginStrategyState();
 }
 
-class _HomeState extends State<Home> {
-  final _authProvider = AuthenticationService.getState();
+class _LoginStrategyState extends State<LoginStrategy> {
+  final _authProvider = AuthProvider.getState();
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  final int splashDuration = 2;
   String _userId = "";
 
   @override
@@ -32,22 +29,24 @@ class _HomeState extends State<Home> {
   Future<void> currentUser() async {
     //var currentUser = _authProvider.getCurrentUser();
 
-    setState(() {
-      if (currentUser != null) {
-        _userId = currentUser?.uid;
-      }
-      authStatus = currentUser?.uid == null
-          ? AuthStatus.NOT_LOGGED_IN
-          : AuthStatus.LOGGED_IN;
-      switchStatement();
-    });
-  }
+   //if (currentUser != null) {
+   //  _userId = currentUser?.uid;
+   //} else {
+   //  var guest = await _authProvider.logInGuest();
+   //  currentUser = guest.user;
+   //}
+    var guest = await _authProvider.logInGuest();
+    var currentUser = guest.user;
 
-  void loginCallback() {
-    var currentUser = _authProvider.getCurrentUser();
     setState(() {
-      _userId = currentUser.uid.toString();
-      authStatus = AuthStatus.LOGGED_IN;
+      if (currentUser.isAnonymous) {
+        authStatus = AuthStatus.ANONYMOUS;
+      } else {
+        authStatus = currentUser?.uid == null
+            ? AuthStatus.NOT_LOGGED_IN
+            : AuthStatus.LOGGED_IN;
+      }
+      switchStatement();
     });
   }
 

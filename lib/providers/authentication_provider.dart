@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthenticationService {
-  static AuthenticationService _instance;
+class AuthProvider {
+  static AuthProvider _instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  AuthenticationService._internal();
+  AuthProvider._internal();
 
-  static AuthenticationService getState() {
+  static AuthProvider getState() {
     if (_instance == null) {
-      _instance = AuthenticationService._internal();
+      _instance = AuthProvider._internal();
     }
 
     return _instance;
@@ -21,6 +21,8 @@ class AuthenticationService {
     );
     return firebaseUser;
   }
+
+  Future<UserCredential> logInGuest() async => await _auth.signInAnonymously();
 
   Future<UserCredential> registerFirebase(String email, String password) async {
     UserCredential createUserWithEmailAndPassword = await _auth

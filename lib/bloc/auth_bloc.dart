@@ -3,18 +3,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_go_club_app/preferencias_usuario/user_preferences.dart';
-import 'package:flutter_go_club_app/providers/authentication_service_impl.dart';
-import 'package:flutter_go_club_app/providers/user_service_impl.dart';
-import 'package:flutter_go_club_app/utils/validators/direction_validator.dart';
-import 'package:flutter_go_club_app/utils/validators/email_validator.dart';
-import 'package:flutter_go_club_app/utils/validators/name_validator.dart';
-import 'package:flutter_go_club_app/utils/validators/password_validator.dart';
-import 'package:flutter_go_club_app/utils/validators/telephone_validator.dart';
-import 'package:la_boutique_de_a_y_s_app/providers/authentication_service_impl.dart';
-import 'package:la_boutique_de_a_y_s_app/validators/email_validator.dart';
-import 'package:la_boutique_de_a_y_s_app/validators/name_validator.dart';
-import 'package:la_boutique_de_a_y_s_app/validators/password_validator.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import '../providers/authentication_provider.dart';
+import '../validators/email_validator.dart';
+import '../validators/name_validator.dart';
+import '../validators/password_validator.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 class AuthBloc with PasswordValidator, EmailValidator, NameValidator {
