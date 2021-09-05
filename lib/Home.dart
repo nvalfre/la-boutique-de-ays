@@ -26,6 +26,15 @@ class _LoginStrategyState extends State<LoginStrategy> {
         const Duration(milliseconds: 1500), () => {currentUser()});
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: backgroundStack(),
+      ),
+    );
+  }
+
   Future<void> currentUser() async {
     //var currentUser = _authProvider.getCurrentUser();
 
@@ -79,7 +88,7 @@ class _LoginStrategyState extends State<LoginStrategy> {
             image: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
             placeholder: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
             fit: BoxFit.contain,
-            fadeInDuration: Duration(seconds: 1),
+            fadeInDuration: Duration(milliseconds: 80),
             width: 275,
           ),
           SizedBox(width: double.infinity),
@@ -116,17 +125,9 @@ class _LoginStrategyState extends State<LoginStrategy> {
   TextStyle buildTextStyleForHeader(double size) =>
       TextStyle(color: Colors.white, fontSize: size);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: backgroundStack(),
-      ),
-    );
-  }
 
   void switchStatement() {
-    const delay = Duration(milliseconds: 500);
+    const delay = Duration(milliseconds: 50);
     switch (authStatus) {
       case AuthStatus.NOT_DETERMINED:
         break;
@@ -139,7 +140,7 @@ class _LoginStrategyState extends State<LoginStrategy> {
       case AuthStatus.NOT_LOGGED_IN:
         Future.delayed(
           delay,
-          () => Navigator.pushReplacementNamed(context, homeRoute),
+          () => Navigator.pushReplacementNamed(context, loginRoute),
         );
         break;
       case AuthStatus.LOGGED_IN:
