@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:la_boutique_de_a_y_s_app/domain/product.dart';
 
 class ProductProvider {
   static ProductProvider _instance;
-  final repository = FirebaseFirestore.instance.collection('products');
+  final _repository = FirebaseFirestore.instance.collection('products');
   final categoryCovariant = "category";
 
   ProductProvider._internal();
@@ -20,13 +21,13 @@ class ProductProvider {
       .map((product) => Product.fromQuerySnapshot(product));
 
   Stream<QuerySnapshot> getProductQuerySnap(String uid) =>
-      repository.where('id', isEqualTo: uid).snapshots();
+      _repository.where('id', isEqualTo: uid).snapshots();
 
   Stream<List<Product>> getProducts() =>
-      repository.snapshots().map((snap) => toProductList(snap.docs));
+      _repository.snapshots().map((snap) => toProductList(snap.docs));
 
   List<Product> toProductList(List<DocumentSnapshot> documents) {
-    List<Product> list = List();
+    List<Product> list = [];
     documents.forEach((document) {
       Product product = Product.fromSnapshot(document);
       list.add(product);
@@ -34,10 +35,22 @@ class ProductProvider {
     return list;
   }
 
+  List<Product> toProductListFromQuery(QuerySnapshot snapshot) {
+    List<Product> list = [];
+    snapshot.docs.forEach((document) {
+      Product product = Product.fromQueryDocSnapshot(document);
+      list.add(product);
+    });
+    return list;
+  }
+
   Stream<Product> loadProductStreamBy(key, covariant) {
-    return repository
+    return _repository
         .where(key, isEqualTo: covariant)
         .snapshots()
         .map((product) => Product.fromQuerySnapshot(product));
   }
+
+  Product findById(String productId) => Product();
+
 }

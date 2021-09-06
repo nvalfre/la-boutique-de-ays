@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:la_boutique_de_a_y_s_app/bloc/auth_bloc.dart';
-
 class Provider extends InheritedWidget {
   static Provider _instance;
-  final _authBloc = new AuthBloc();
 
   factory Provider({Key key, Widget child}) {
     if (_instance == null) {
@@ -20,7 +17,4 @@ class Provider extends InheritedWidget {
 
   static Provider getProvider(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<Provider>();
-
-  static AuthBloc authBloc(BuildContext context) =>
-      getProvider(context)._authBloc;
 }
