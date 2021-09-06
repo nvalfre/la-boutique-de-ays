@@ -354,7 +354,7 @@ class ProductGrid extends StatelessWidget {
         stream: productProvider.getProducts(),
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasData) {
-            return productGrid(snapshot);
+            return productListView(snapshot);
           } else {
             return Container(
                 height: 100.0,
@@ -380,7 +380,7 @@ class ProductGrid extends StatelessWidget {
             false);
       },
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
+        crossAxisCount: 2,
         childAspectRatio: 3 / 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
