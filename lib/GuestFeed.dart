@@ -17,7 +17,6 @@ class GuestFeed extends StatefulWidget {
 }
 
 class _GuestFeedState extends State<GuestFeed> {
-  var productProvider = ProductProvider.getState(); //TODO BLOC
   Product _product;
   File _photo;
   UserPreferences _prefs = UserPreferences();
@@ -61,8 +60,8 @@ class _GuestFeedState extends State<GuestFeed> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _swiperTarjetas(productProvider),
-                      _detailsColumn(productProvider),
+                      _swiperTarjetas(),
+                      _detailsColumn(),
                     ],
                   ),
                 ),
@@ -77,29 +76,16 @@ class _GuestFeedState extends State<GuestFeed> {
   renderSnapshotData(
       AsyncSnapshot<dynamic> snapshot, renderFunction, BuildContext context) {}
 
-  Widget _swiperTarjetas(ProductProvider productProvider) {
+  Widget _swiperTarjetas() {
+    final productProvider = ProductProvider.getState();
+
     return Container(
       padding: EdgeInsets.only(top: 10),
       child: StreamBuilder(
-        stream: productProvider.getProducts(), //loadbyclub
+        stream: productProvider.getProducts(),
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           if (snapshot.hasData) {
-            return Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(left: 20.0),
-                      child: Text('Productos',
-                          style: Theme.of(context).textTheme.subtitle1)),
-                  SizedBox(height: 5.0),
-                  ProductCardSwipper(
-                    itemList: snapshot.data,
-                    siguientePagina: productProvider.getProducts,
-                  ),
-                ],
-              ),
-            );
+            return renderCardSwipperContainer(context, snapshot, productProvider);
           } else {
             return Container(
                 height: 100.0,
@@ -110,7 +96,27 @@ class _GuestFeedState extends State<GuestFeed> {
     );
   }
 
-  Widget _detailsColumn(ProductProvider productProvider) {
+  Container renderCardSwipperContainer(BuildContext context, AsyncSnapshot<List<Product>> snapshot, ProductProvider productProvider) {
+    return Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text('Productos',
+                        style: Theme.of(context).textTheme.subtitle1)),
+                SizedBox(height: 5.0),
+                ProductCardSwipper(
+                  itemList: snapshot.data,
+                  siguientePagina: productProvider.getProducts,
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget _detailsColumn() {
+    final productProvider = ProductProvider.getState();
     return Container(
       padding: EdgeInsets.only(top: 20),
       child: Column(
