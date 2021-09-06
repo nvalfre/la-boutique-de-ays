@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../domain/enums/user_role.dart';
 import '../domain/product.dart';
+import '../domain/product.dart';
 import '../widgets/product_card.dart';
 import '../providers/product_provider.dart';
 import '../router/router_constants.dart';
@@ -291,8 +292,9 @@ class SocialMediaButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var text = Text("Buscanos en nuestras redes: ",
-        style: Theme.of(context).textTheme.subtitle2);
+    //final data = "Buscanos en nuestras redes: ";
+    final data = "";
+    final text = Text(data, style: Theme.of(context).textTheme.subtitle2);
     return Align(
       alignment: Alignment.bottomCenter,
       child: Row(
@@ -393,13 +395,13 @@ class ProductGrid extends StatelessWidget {
       shrinkWrap: true,
       itemCount: snapshot.data.length,
       itemBuilder: (context, i) => InkWell(
-        onTap: () =>{},
+        onTap: () => {},
         child: _rowWidgetWithNameAndDescriptions(snapshot.data[i], context),
       ),
     );
   }
-  _rowWidgetWithNameAndDescriptions(Product product, BuildContext context) {
 
+  _rowWidgetWithNameAndDescriptions(Product product, BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Row(
@@ -418,31 +420,74 @@ class ProductGrid extends StatelessWidget {
                   fit: BoxFit.contain),
             ),
           ),
-          SizedBox(width: 10),
+          SizedBox(width: 5),
           Flexible(
               child: Column(
-                children: <Widget>[
-                  Text(product.name,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .button),
-                  Text(product.description,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .button),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],)
-          ),
-          IconButton(
-            icon: Icon(Icons.more_rounded),
-            onPressed: () => {},
-          )
+            children: <Widget>[
+              Text(product.name, style: Theme.of(context).textTheme.button),
+              Text(product.description,
+                  style: Theme.of(context).textTheme.button),
+              SizedBox(
+                width: 5,
+              )
+            ],
+          )),
+          _getDetalleInkWell(context, product),
+          _getPriceInkWell(context, product),
         ],
       ),
     );
   }
+
+  InkWell _getDetalleInkWell(BuildContext context, Product product) {
+    return InkWell(
+      onTap: () => {},
+      child: productDetailsRow(context, product),
+    );
+  }
+
+  Row productDetailsRow(BuildContext context, Product product) {
+    return Row(
+      children: <Widget>[
+        Text(
+          "Detalle",
+          style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.0),
+        ),
+        IconButton(
+          icon: Icon(Icons.more_rounded),
+          onPressed: () => {},
+        ),
+      ],
+    );
+  }
+
+  InkWell _getPriceInkWell(BuildContext context, Product product) {
+    return InkWell(
+      onTap: () => {},
+      child: buyNowRow(context, product),
+    );
+  }
+
+  Row buyNowRow(BuildContext context, Product product) {
+    return Row(
+      children: <Widget>[
+        Text(
+          "Comprar ahora",
+          style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.0),
+        ),
+        IconButton(
+          icon: Icon(Icons.add_shopping_cart),
+          onPressed: () => {},
+        ),
+      ],
+    );
+  }
+
+
 }
