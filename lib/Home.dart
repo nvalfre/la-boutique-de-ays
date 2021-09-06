@@ -85,8 +85,8 @@ class _LoginStrategyState extends State<LoginStrategy> {
             height: 50,
           ),
           FadeInImage(
-            image: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
-            placeholder: AssetImage('assets/logo/la-boutique-de-ays.jpeg'),
+            image: AssetImage('assets/logo/la-boutique-logo.gif'),
+            placeholder: AssetImage('assets/logo/la-boutique-logo.gif'),
             fit: BoxFit.contain,
             fadeInDuration: Duration(milliseconds: 80),
             width: 275,

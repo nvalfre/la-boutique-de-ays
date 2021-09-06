@@ -1,12 +1,10 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_gifs/loading_gifs.dart';
 
-import 'shared_preferences/shared_prefs_constants.dart';
-import 'domain/product.dart';
-import 'shared_preferences/user_preferences.dart';
+import '../shared_preferences/shared_prefs_constants.dart';
+import '../domain/product.dart';
+import '../shared_preferences/user_preferences.dart';
 
 class ProductCardSwipper extends StatelessWidget {
   UserPreferences _prefs = UserPreferences();
