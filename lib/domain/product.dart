@@ -25,7 +25,7 @@ class Product {
   });
 
   String id;
-  int price;
+  double price;
   String name;
   String description;
   String avatar;
