@@ -421,17 +421,20 @@ class ProductGrid extends StatelessWidget {
             ),
           ),
           SizedBox(width: 5),
-          Flexible(
-              child: Column(
-            children: <Widget>[
-              Text(product.name, style: Theme.of(context).textTheme.button),
-              Text(product.description,
-                  style: Theme.of(context).textTheme.button),
-              SizedBox(
-                width: 5,
-              )
-            ],
-          )),
+          Container(
+            width: 200,
+            child: Flexible(
+                child: Column(
+              children: <Widget>[
+                Text(product.name, style: Theme.of(context).textTheme.button),
+                Text(product.description,
+                    style: Theme.of(context).textTheme.button),
+                SizedBox(
+                  width: 5,
+                )
+              ],
+            )),
+          ),
           _getDetalleInkWell(context, product),
           _getPriceInkWell(context, product),
         ],
