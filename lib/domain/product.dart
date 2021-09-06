@@ -22,6 +22,7 @@ class Product {
     this.avatar,
     this.status,
     this.attributes,
+    this.isFavorite,
   });
 
   String id;
@@ -31,6 +32,7 @@ class Product {
   String avatar;
   String status;
   Attributes attributes;
+  bool isFavorite;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
@@ -41,6 +43,10 @@ class Product {
         status: json["status"],
         attributes: Attributes.fromJson(json["attributes"]),
       );
+
+  void setFavValue(bool newValue) {
+    isFavorite = newValue;
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -63,6 +69,17 @@ class Product {
 
   factory Product.fromQuerySnapshot(QuerySnapshot snap) {
     var document = snap.docs[0];
+    return Product(
+        id: document.data()['id'],
+        name: document.data()["name"],
+        price: document.data()["price"],
+        avatar: document.data()["avatar"],
+        status: document.data()["status"],
+        attributes: Attributes.fromJson(document.data()["attributes"]));
+  }
+
+
+  factory Product.fromQueryDocSnapshot(QueryDocumentSnapshot document) {
     return Product(
         id: document.data()['id'],
         name: document.data()["name"],
