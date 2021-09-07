@@ -1,11 +1,30 @@
+import 'package:la_boutique_de_a_y_s_app/consts/theme_data.dart';
+import 'package:la_boutique_de_a_y_s_app/inner_screens/product_details.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/dark_theme_provider.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
+import 'package:la_boutique_de_a_y_s_app/screens/wishlist/wishlist.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'inner_screens/brands_navigation_rail.dart';
+import 'inner_screens/categories_feeds.dart';
+import 'screens/auth/forget_password.dart';
+import 'screens/orders/order.dart';
+import 'screens/upload_product_form.dart';
+import 'provider/cart_provider.dart';
+import 'provider/favs_provider.dart';
+import 'screens/auth/login.dart';
+import 'screens/auth/sign_up.dart';
+import 'screens/bottom_bar.dart';
+import 'screens/cart/cart.dart';
+import 'screens/feeds.dart';
+import 'screens/user_state.dart';
 
-import 'package:la_boutique_de_a_y_s_app/router/router.dart';
-
-import 'router/router_constants.dart';
-
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -13,73 +32,103 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  DarkThemeProvider themeChangeProvider = DarkThemeProvider();
 
+  void getCurrentAppTheme() async {
+    print('called ,mmmmm');
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreferences.getTheme();
+  }
+
+  @override
+  void initState() {
+    getCurrentAppTheme();
+    super.initState();
+  }
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return SomethingWentWrong();
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'La boutique de AyS',
-            theme: themeData(context),
-            onGenerateRoute: RouterMapping.generateRoute,
-            initialRoute: homeRoute,
+        future: _initialization,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Column(
+                    children: [
+                      buildLogo(),
+                      CircularProgressIndicator()
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text('Error occured'),
+                ),
+              ),
+            );
+          }
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) {
+                return themeChangeProvider;
+              }),
+              ChangeNotifierProvider(
+                create: (_) => Products(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => CartProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => FavsProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => OrdersProvider(),
+              ),
+            ],
+            child: Consumer<DarkThemeProvider>(
+              builder: (context, themeChangeProvider, ch) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'La boutique de AyS',
+                  theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+                  home: UserState(),
+                  //initialRoute: '/',
+                  routes: {
+                    //   '/': (ctx) => LandingPage(),
+                    BrandNavigationRailScreen.routeName: (ctx) =>
+                        BrandNavigationRailScreen(),
+                    CartScreen.routeName: (ctx) => CartScreen(),
+                    Feeds.routeName: (ctx) => Feeds(),
+                    WishlistScreen.routeName: (ctx) => WishlistScreen(),
+                    ProductDetails.routeName: (ctx) => ProductDetails(),
+                    CategoriesFeedsScreen.routeName: (ctx) =>
+                        CategoriesFeedsScreen(),
+                    LoginScreen.routeName: (ctx) => LoginScreen(),
+                    SignUpScreen.routeName: (ctx) => SignUpScreen(),
+                    BottomBarScreen.routeName: (ctx) => BottomBarScreen(),
+                    UploadProductForm.routeName: (ctx) => UploadProductForm(),
+                    ForgetPassword.routeName: (ctx) => ForgetPassword(),
+                    OrderScreen.routeName: (ctx) => OrderScreen(),
+                  },
+                );
+              },
+            ),
           );
-        }
-
-        return CircularProgressIndicator();
-      },
-    );
+        });
   }
 
-  ThemeData themeData(BuildContext ctx) {
-    return ThemeData(
-      primarySwatch: getMaterialColor(),
-      backgroundColor: Colors.deepPurpleAccent,
-      accentColor: Colors.pink,
-      accentColorBrightness: Brightness.dark,
-      buttonTheme: ButtonTheme.of(ctx).copyWith(
-        buttonColor: Colors.pink,
-        textTheme: ButtonTextTheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
-  }
-
-  MaterialColor getMaterialColor() {
-    var r = 255;
-    var g = 192;
-    var b = 203;
-    Map<int, Color> color = {
-      50: Color.fromRGBO(r, g, b, .1),
-      100: Color.fromRGBO(r, g, b, .2),
-      200: Color.fromRGBO(r, g, b, .3),
-      300: Color.fromRGBO(r, g, b, .4),
-      400: Color.fromRGBO(r, g, b, .5),
-      500: Color.fromRGBO(r, g, b, .6),
-      600: Color.fromRGBO(r, g, b, .7),
-      700: Color.fromRGBO(r, g, b, .8),
-      800: Color.fromRGBO(r, g, b, .9),
-      900: Color.fromRGBO(r, g, b, 1),
-    };
-
-    // MaterialColor colorCustom = MaterialColor(0xFFF62EFD, color);
-    MaterialColor colorCustom = MaterialColor(0xFFE22CE8, color);
-    return colorCustom;
-  }
-
-  Widget SomethingWentWrong() {
-    return Container(
-      child: Text("error"),
-    );
+  static FadeInImage buildLogo() {
+    return FadeInImage(
+                      image: AssetImage('assets/logo/la-boutique-logo.gif'),
+                      placeholder: AssetImage('assets/logo/la-boutique-logo.gif'),
+                      fit: BoxFit.cover,
+                    );
   }
 }
