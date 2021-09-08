@@ -51,7 +51,7 @@ class WishlistEmpty extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.06,
           child: RaisedButton(
             onPressed: () => {
-              Navigator.of(context).pushNamed(Feeds.routeName),
+              Navigator.of(context).pushNamed(Marketplace.routeName),
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),

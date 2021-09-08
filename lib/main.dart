@@ -11,6 +11,7 @@ import 'inner_screens/brands_navigation_rail.dart';
 import 'inner_screens/categories_feeds.dart';
 import 'screens/auth/forget_password.dart';
 import 'screens/orders/order.dart';
+import 'screens/search.dart';
 import 'screens/upload_product_form.dart';
 import 'provider/cart_provider.dart';
 import 'provider/favs_provider.dart';
@@ -105,7 +106,7 @@ class _MyAppState extends State<MyApp> {
                     BrandNavigationRailScreen.routeName: (ctx) =>
                         BrandNavigationRailScreen(),
                     CartScreen.routeName: (ctx) => CartScreen(),
-                    Feeds.routeName: (ctx) => Feeds(),
+                    Marketplace.routeName: (ctx) => Marketplace(),
                     WishlistScreen.routeName: (ctx) => WishlistScreen(),
                     ProductDetails.routeName: (ctx) => ProductDetails(),
                     CategoriesFeedsScreen.routeName: (ctx) =>
@@ -116,6 +117,7 @@ class _MyAppState extends State<MyApp> {
                     UploadProductForm.routeName: (ctx) => UploadProductForm(),
                     ForgetPassword.routeName: (ctx) => ForgetPassword(),
                     OrderScreen.routeName: (ctx) => OrderScreen(),
+                    Search.routeName: (ctx) => Search(),
                   },
                 );
               },

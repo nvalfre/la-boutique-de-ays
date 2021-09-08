@@ -8,6 +8,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
+  static var routeName  = '/search';
+
   @override
   _SearchState createState() => _SearchState();
 }

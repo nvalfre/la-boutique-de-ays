@@ -24,7 +24,7 @@ class CartEmpty extends StatelessWidget {
           ),
         ),
         Text(
-          'Your Cart Is Empty',
+          'Carrito vacio',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).textSelectionColor,
@@ -35,7 +35,7 @@ class CartEmpty extends StatelessWidget {
           height: 30,
         ),
         Text(
-          'Looks Like You didn\'t \n add anything to your cart yet',
+          'Parece que aun no agregaste nada',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: themeChange.darkTheme
@@ -51,14 +51,14 @@ class CartEmpty extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.06,
           child: RaisedButton(
-            onPressed: () { Navigator.of(context).pushNamed(Feeds.routeName);},
+            onPressed: () { Navigator.of(context).pushNamed(Marketplace.routeName);},
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
               side: BorderSide(color: Colors.red),
             ),
             color: Colors.redAccent,
             child: Text(
-              'Shop now'.toUpperCase(),
+              'Compra ahora'.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).textSelectionColor,

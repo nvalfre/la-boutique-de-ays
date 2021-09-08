@@ -117,7 +117,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               height: 8,
                             ),
                             Text(
-                              'US \$ ${prodAttr.price}',
+                              '\$ ${prodAttr.price}',
                               style: TextStyle(
                                   color: themeState.darkTheme
                                       ? Theme.of(context).disabledColor
@@ -161,13 +161,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           height: 1,
                         ),
                       ),
-                      _details(themeState.darkTheme, 'Brand: ', prodAttr.brand),
-                      _details(themeState.darkTheme, 'Quantity: ',
+                      _details(themeState.darkTheme, 'Marca: ', prodAttr.brand),
+                      _details(themeState.darkTheme, 'Cantidad: ',
                           '${prodAttr.quantity}'),
-                      _details(themeState.darkTheme, 'Category: ',
+                      _details(themeState.darkTheme, 'Categoria: ',
                           prodAttr.productCategoryName),
-                      _details(themeState.darkTheme, 'Popularity: ',
-                          prodAttr.isPopular ? 'Popular' : 'Barely known'),
+                      _details(themeState.darkTheme, 'Popularidad: ',
+                          prodAttr.isPopular ? 'Popular' : 'Poco relevante'),
                       SizedBox(
                         height: 15,
                       ),
@@ -228,14 +228,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                   padding: EdgeInsets.all(8.0),
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: Text(
-                    'Suggested products:',
+                    'Productos sugeridos:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: 30),
                   width: double.infinity,
-                  height: 340,
+                  height: 400,
                   child: ListView.builder(
                     itemCount:
                         productsList.length < 7 ? productsList.length : 7,
@@ -258,7 +258,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 elevation: 0,
                 centerTitle: true,
                 title: Text(
-                  "DETAIL",
+                  "Detalles",
                   style:
                       TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal),
                 ),
@@ -331,8 +331,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 },
                       child: Text(
                         cartProvider.getCartItems.containsKey(productId)
-                            ? 'In cart'
-                            : 'Add to Cart'.toUpperCase(),
+                            ? 'En carrito'
+                            : 'Agregar al carrito'.toUpperCase(),
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
@@ -350,7 +350,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: Row(
                         children: [
                           Text(
-                            'Buy now'.toUpperCase(),
+                            'Comprar'.toUpperCase(),
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Theme.of(context).textSelectionColor),

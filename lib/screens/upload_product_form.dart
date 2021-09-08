@@ -184,7 +184,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               height: 40,
                               width: 40,
                               child: CircularProgressIndicator()))
-                      : Text('Upload',
+                      : Text('Agregar producto',
                           style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.center),
                 ),
@@ -230,16 +230,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 9),
                                 child: TextFormField(
-                                  key: ValueKey('Title'),
+                                  key: ValueKey('Título'),
                                   validator: (value) {
                                     if (value.isEmpty) {
-                                      return 'Please enter a Title';
+                                      return 'Por favor ingresa un título';
                                     }
                                     return null;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
-                                    labelText: 'Product Title',
+                                    labelText: 'Título del producto',
                                   ),
                                   onSaved: (value) {
                                     _productTitle = value;
@@ -250,11 +250,11 @@ class _UploadProductFormState extends State<UploadProductForm> {
                             Flexible(
                               flex: 1,
                               child: TextFormField(
-                                key: ValueKey('Price \$'),
+                                key: ValueKey('Precio \$'),
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Price is missed';
+                                    return 'El precio no esta cargado';
                                   }
                                   return null;
                                 },
@@ -263,12 +263,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       RegExp(r'[0-9]')),
                                 ],
                                 decoration: InputDecoration(
-                                  labelText: 'Price \$',
-                                  //  prefixIcon: Icon(Icons.mail),
-                                  // suffixIcon: Text(
-                                  //   '\n \n \$',
-                                  //   textAlign: TextAlign.start,
-                                  // ),
+                                  labelText: 'Precio \$',
                                 ),
                                 //obscureText: true,
                                 onSaved: (value) {
@@ -305,9 +300,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                         height: 200,
                                         // width: 200,
                                         decoration: BoxDecoration(
-                                          // borderRadius: BorderRadius.only(
-                                          //   topLeft: const Radius.circular(40.0),
-                                          // ),
                                           color:
                                               Theme.of(context).backgroundColor,
                                         ),
@@ -330,7 +322,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     icon: Icon(Icons.camera,
                                         color: Colors.purpleAccent),
                                     label: Text(
-                                      'Camera',
+                                      'Camara',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Theme.of(context)
@@ -346,7 +338,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     icon: Icon(Icons.image,
                                         color: Colors.purpleAccent),
                                     label: Text(
-                                      'Gallery',
+                                      'Galeria',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Theme.of(context)
@@ -364,7 +356,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       color: Colors.red,
                                     ),
                                     label: Text(
-                                      'Remove',
+                                      'Borrar',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.redAccent,
@@ -376,8 +368,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
                             ),
                           ],
                         ),
-
-                        //    SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -393,13 +383,13 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     key: ValueKey('Category'),
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'Please enter a Category';
+                                        return 'Por favor selecciona una categoría';
                                       }
                                       return null;
                                     },
                                     //keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
-                                      labelText: 'Add a new Category',
+                                      labelText: 'Agrega una categoría',
                                     ),
                                     onSaved: (value) {
                                       _productCategory = value;
@@ -443,7 +433,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   print(_productCategory);
                                 });
                               },
-                              hint: Text('Select a Category'),
+                              hint: Text('Categorías'),
                               value: _categoryValue,
                             ),
                           ],
@@ -463,13 +453,13 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     key: ValueKey('Brand'),
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'Brand is missed';
+                                        return 'Falta la marca';
                                       }
                                       return null;
                                     },
                                     //keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
-                                      labelText: 'Brand',
+                                      labelText: 'Marca',
                                     ),
                                     onSaved: (value) {
                                       _productBrand = value;
@@ -520,17 +510,17 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   print(_productBrand);
                                 });
                               },
-                              hint: Text('Select a Brand'),
+                              hint: Text('Marcas              '),
                               value: _brandValue,
                             ),
                           ],
                         ),
                         SizedBox(height: 15),
                         TextFormField(
-                            key: ValueKey('Description'),
+                            key: ValueKey('Descripción'),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'product description is required';
+                                return 'La descripción del producto es requerida';
                               }
                               return null;
                             },
@@ -539,8 +529,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                             textCapitalization: TextCapitalization.sentences,
                             decoration: InputDecoration(
                               //  counterText: charLength.toString(),
-                              labelText: 'Description',
-                              hintText: 'Product description',
+                              labelText: 'Descripción',
+                              hintText: 'Descripción del producto',
                               border: OutlineInputBorder(),
                             ),
                             onSaved: (value) {
@@ -560,7 +550,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                 padding: const EdgeInsets.only(right: 9),
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
-                                  key: ValueKey('Quantity'),
+                                  key: ValueKey('Cantidad'),
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return 'Quantity is missed';
@@ -568,7 +558,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     return null;
                                   },
                                   decoration: InputDecoration(
-                                    labelText: 'Quantity',
+                                    labelText: 'Cantidad',
                                   ),
                                   onSaved: (value) {
                                     _productQuantity = value;

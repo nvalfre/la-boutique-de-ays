@@ -50,18 +50,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (isValid) {
       _formKey.currentState.save();
       try {
-        if (_pickedImage == null) {
-          _globalMethods.authErrorHandle('Please pick an image', context);
-        } else {
+        if (true){
           setState(() {
             _isLoading = true;
           });
-          final ref = FirebaseStorage.instance
-              .ref()
-              .child('usersImages')
-              .child(_fullName + '.jpg');
-          await ref.putFile(_pickedImage);
-          url = await ref.getDownloadURL();
+          // final ref = FirebaseStorage.instance
+          //     .ref()
+          //     .child('usersImages')
+          //     .child(_fullName + '.jpg');
+          // await ref.putFile(_pickedImage);
+          // url = await ref.getDownloadURL();
+          url = "https://www.xlsemanal.com/wp-content/uploads/sites/3/2017/03/yoga-relax-1024x684.jpg";
           await _auth.createUserWithEmailAndPassword(
               email: _emailAddress.toLowerCase().trim(),
               password: _password.trim());

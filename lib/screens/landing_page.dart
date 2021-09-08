@@ -56,6 +56,9 @@ class _LandingPageState extends State<LandingPage>
   }
 
   Future<void> _googleSignIn() async {
+    setState(() {
+      _isLoading = true;
+    });
     final googleSignIn = GoogleSignIn();
     final googleAccount = await googleSignIn.signIn();
     if (googleAccount != null) {
@@ -82,8 +85,13 @@ class _LandingPageState extends State<LandingPage>
             'joinedAt': formattedDate,
             'createdAt': Timestamp.now(),
           });
+          // Navigator.pushNamed(context, BottomBarScreen.routeName);
         } catch (error) {
           _globalMethods.authErrorHandle(error.message, context);
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
         }
       }
     }
@@ -263,13 +271,13 @@ class _LandingPageState extends State<LandingPage>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              OutlineButton(
-                onPressed: _googleSignIn,
-                shape: StadiumBorder(),
-                highlightedBorderColor: Colors.red.shade200,
-                borderSide: BorderSide(width: 2, color: Colors.red),
-                child: Text('Google +'),
-              ),
+             //OutlineButton(
+             //  onPressed: _googleSignIn,
+             //  shape: StadiumBorder(),
+             //  highlightedBorderColor: Colors.red.shade200,
+             //  borderSide: BorderSide(width: 2, color: Colors.red),
+             //  child: Text('Google +'),
+             //),
               _isLoading
                   ? CircularProgressIndicator()
                   : OutlineButton(

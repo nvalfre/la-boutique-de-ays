@@ -1,5 +1,6 @@
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/inner_screens/brands_navigation_rail.dart';
+import 'package:la_boutique_de_a_y_s_app/models/product.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
@@ -21,34 +22,27 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List _carouselImages = [
-    'assets/images/carousel1.png',
-    'assets/images/carousel2.jpeg',
+    'assets/images/carousel1.jpg',
+    'assets/images/carousel2.jpg',
     'assets/images/carousel3.jpg',
-    'assets/images/carousel4.png',
+    'assets/images/carousel4.jpg',
   ];
 
   List _brandImages = [
-    'assets/images/addidas.jpg',
-    'assets/images/apple.jpg',
-    'assets/images/Dell.jpg',
-    'assets/images/h&m.jpg',
-    'assets/images/nike.jpg',
-    'assets/images/samsung.jpg',
-    'assets/images/Huawei.jpg',
+    'assets/images/proyec.jpg',
+    'assets/images/gmp.png',
   ];
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    productsData.fetchProducts();
 
-    final popularItems = productsData.popularProducts;
-    print('popularItems length ${popularItems.length}');
     return Scaffold(
       body: BackdropScaffold(
         frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
         headerHeight: MediaQuery.of(context).size.height * 0.25,
         appBar: BackdropAppBar(
-          title: Text("Home"),
+          title: Center(child: Text('La boutique de AyS')),
           leading: BackdropToggleButton(icon: AnimatedIcons.home_menu),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -104,7 +98,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Categories',
+                  'Categorías',
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
                 ),
               ),
@@ -126,7 +120,7 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: [
                     Text(
-                      'Popular Brands',
+                      'Marcas populares',
                       style:
                           TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
                     ),
@@ -141,7 +135,7 @@ class _HomeState extends State<Home> {
                         );
                       },
                       child: Text(
-                        'View all...',
+                        'Ver más',
                         style: TextStyle(
                             fontWeight: FontWeight.w800,
                             fontSize: 15,
@@ -186,18 +180,18 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: [
                     Text(
-                      'Popular Products',
+                      'Productos populares',
                       style:
                           TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
                     ),
                     Spacer(),
                     FlatButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(Feeds.routeName, arguments: 'popular');
+                        Navigator.of(context).pushNamed(Marketplace.routeName,
+                            arguments: 'popular');
                       },
                       child: Text(
-                        'View all...',
+                        'Ver más',
                         style: TextStyle(
                             fontWeight: FontWeight.w800,
                             fontSize: 15,
@@ -207,25 +201,31 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Container(
-                width: double.infinity,
-                height: 285,
-                margin: EdgeInsets.symmetric(horizontal: 3),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: popularItems.length,
-                    itemBuilder: (BuildContext ctx, int index) {
-                      return ChangeNotifierProvider.value(
-                        value: popularItems[index],
-                        child: PopularProducts(
-                            // imageUrl: popularItems[index].imageUrl,
-                            // title: popularItems[index].title,
-                            // description: popularItems[index].description,
-                            // price: popularItems[index].price,
-                            ),
-                      );
-                    }),
-              )
+              FutureBuilder(
+                  future: productsData.fetchProductsList(),
+                  initialData: productsData.products,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Product>> snapshot) {
+                    return snapshot.hasData
+                        ? Container(
+                            width: double.infinity,
+                            height: 285,
+                            margin: EdgeInsets.symmetric(horizontal: 3),
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: productsData.popularProducts.length,
+                                itemBuilder: (BuildContext ctx, int index) {
+                                  return ChangeNotifierProvider.value(
+                                    value: productsData.popularProducts[index],
+                                    child: PopularProducts(),
+                                  );
+                                }),
+                          )
+                        : CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor),
+                          );
+                  })
             ],
           ),
         ),

@@ -12,14 +12,14 @@ import 'package:provider/provider.dart';
 
 import 'cart/cart.dart';
 
-class Feeds extends StatefulWidget {
-  static const routeName = '/Feeds';
+class Marketplace extends StatefulWidget {
+  static const routeName = '/Marketplace';
 
   @override
-  _FeedsState createState() => _FeedsState();
+  _MarketplaceState createState() => _MarketplaceState();
 }
 
-class _FeedsState extends State<Feeds> {
+class _MarketplaceState extends State<Marketplace> {
   Future<void> _getProductsOnRefresh() async {
     await Provider.of<Products>(context, listen: false).fetchProducts();
     setState(() {});
@@ -39,7 +39,7 @@ class _FeedsState extends State<Feeds> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).cardColor,
-        title: Text('Feeds'),
+        title: Text('Nuestros productos'),
         actions: [
           Consumer<FavsProvider>(
             builder: (_, favs, ch) => Badge(

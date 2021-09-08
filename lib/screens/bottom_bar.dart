@@ -9,41 +9,50 @@ import 'home.dart';
 
 class BottomBarScreen extends StatefulWidget {
   static const routeName = '/BottomBarScreen';
+
   @override
   _BottomBarScreenState createState() => _BottomBarScreenState();
 }
 
-class _BottomBarScreenState extends State<BottomBarScreen> {
-  // List<Map<String, Object>> _pages;
+class _BottomBarScreenState extends State<BottomBarScreen>
+    with SingleTickerProviderStateMixin {
   int _selectedPageIndex = 1;
   List<Object> pages;
+  TabController _tabController;
+
+  final List<Widget> listIcons = [
+    Tab(icon: Icon(Icons.home)),
+    Tab(icon: Icon(Icons.rss_feed_rounded)),
+    //  Tab(icon: Icon(Icons.search)),
+    Tab(icon: Icon(Icons.shopping_cart_rounded)),
+    Tab(icon: Icon(Icons.account_circle_outlined)),
+  ];
+
   @override
   void initState() {
     pages = [
       Home(),
-      Feeds(),
-      Search(),
+      Marketplace(),
+      //  Search(),
       CartScreen(),
       UserInfo(),
     ];
-    // _pages = [
-    //   {
-    //     'page': Home(),
-    //   },
-    //   {
-    //     'page': Feeds(),
-    //   },
-    //   {
-    //     'page': Search(),
-    //   },
-    //   {
-    //     'page': CartScreen(),
-    //   },
-    //   {
-    //     'page': UserInfo(),
-    //   },
-    // ];
+    _tabController = TabController(length: pages.length, vsync: this);
+
     super.initState();
+  }
+
+  TabBarView getTabBarView(tabController) {
+    return TabBarView(
+      controller: tabController,
+      children: [
+        Center(child: pages[0]),
+        Center(child: pages[1]),
+        //Center(child: pages[2]),
+        Center(child: pages[2]),
+        Center(child: pages[3]),
+      ],
+    );
   }
 
   void _selectPage(int index) {
@@ -55,52 +64,19 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_selectedPageIndex], //_pages[_selectedPageIndex]['page'],
-      bottomNavigationBar: BottomAppBar(
-        // color: Colors.white,
-        shape: CircularNotchedRectangle(),
-        notchMargin: 0.01,
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          height: kBottomNavigationBarHeight * 0.98,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: BottomNavigationBar(
-              onTap: _selectPage,
-              backgroundColor: Theme.of(context).primaryColor,
-              unselectedItemColor: Theme.of(context).textSelectionColor,
-              selectedItemColor: Colors.purple,
-              currentIndex: _selectedPageIndex,
-              // selectedLabelStyle: TextStyle(fontSize: 16),
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(MyAppIcons.home),
-                  // title: Text('Home'),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(MyAppIcons.rss), label: 'Feeds'),
-                BottomNavigationBarItem(
-                    activeIcon: null, icon: Icon(null), label: 'Search'),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      MyAppIcons.bag,
-                    ),
-                    label: 'Cart'),
-                BottomNavigationBarItem(
-                    icon: Icon(MyAppIcons.user), label: 'User'),
-              ],
-            ),
-          ),
+      body: getTabBarView(_tabController),
+      appBar: AppBar(
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabs: listIcons,
+          indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(width: 2.0, color: Colors.white),
+              insets: EdgeInsets.symmetric(horizontal: 0.0)),
+          indicatorWeight: 4.0,
+          labelPadding: EdgeInsets.only(left: 30.0, right: 30.0),
         ),
+        title: Center(child: buildLogo()),
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
@@ -113,11 +89,21 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
           tooltip: 'Search',
           elevation: 4,
           child: Icon(MyAppIcons.search),
-          onPressed: () => setState(() {
-            _selectedPageIndex = 2;
-          }),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return Search();
+          })),
         ),
       ),
+    );
+  }
+
+  static FadeInImage buildLogo() {
+    return FadeInImage(
+      width: 50,
+      height: 50,
+      image: AssetImage('assets/logo/la-boutique-logo.gif'),
+      placeholder: AssetImage('assets/logo/la-boutique-logo.gif'),
+      fit: BoxFit.cover,
     );
   }
 }

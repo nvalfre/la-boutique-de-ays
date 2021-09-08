@@ -134,10 +134,10 @@ class FeedDialog extends StatelessWidget {
 
     List<String> _texts = [
       favs.getFavsItems.containsKey(productId)
-          ? 'In wishlist'
-          : 'Add to wishlist',
-      'View product',
-      cart.getCartItems.containsKey(productId) ? 'In Cart ' : 'Add to cart',
+          ? 'En favoritos'
+          : 'Agregar a la lista de favoritos',
+      'Ver producto',
+      cart.getCartItems.containsKey(productId) ? 'En carrito ' : 'Agregar al carrito',
     ];
     List<Color> _colors = [
       favs.getFavsItems.containsKey(productId)

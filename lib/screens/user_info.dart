@@ -70,8 +70,6 @@ class _UserInfoState extends State<UserInfo> {
             controller: _scrollController,
             slivers: <Widget>[
               SliverAppBar(
-                // leading: Icon(Icons.ac_unit_outlined),
-                // automaticallyImplyLeading: false,
                 elevation: 0,
                 expandedHeight: 200,
                 pinned: true,
@@ -125,7 +123,7 @@ class _UserInfoState extends State<UserInfo> {
                             ),
                             Text(
                               // 'top.toString()',
-                              _name == null ? 'Guest' : _name,
+                              _name == null ? 'Invitado' : _name,
                               style: TextStyle(
                                   fontSize: 20.0, color: Colors.white),
                             ),
@@ -148,7 +146,7 @@ class _UserInfoState extends State<UserInfo> {
                   children: [
                     Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: userTitle(title: 'User Bag')),
+                        child: userTitle(title: 'Perfil')),
                     Divider(
                       thickness: 1,
                       color: Colors.grey,
@@ -160,7 +158,7 @@ class _UserInfoState extends State<UserInfo> {
                             .pushNamed(WishlistScreen.routeName),
                         splashColor: Colors.red,
                         child: ListTile(
-                          title: Text('Wishlist'),
+                          title: Text('Favoritos'),
                           trailing: Icon(Icons.chevron_right_rounded),
                           leading: Icon(MyAppIcons.wishlist),
                         ),
@@ -170,33 +168,33 @@ class _UserInfoState extends State<UserInfo> {
                       onTap: () {
                         Navigator.of(context).pushNamed(CartScreen.routeName);
                       },
-                      title: Text('Cart'),
+                      title: Text('Carrito'),
                       trailing: Icon(Icons.chevron_right_rounded),
                       leading: Icon(MyAppIcons.cart),
                     ),
                     ListTile(
                       onTap: () => Navigator.of(context)
                           .pushNamed(OrderScreen.routeName),
-                      title: Text('My Orders'),
+                      title: Text('Mis ordenes'),
                       trailing: Icon(Icons.chevron_right_rounded),
                       leading: Icon(MyAppIcons.bag),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: userTitle(title: 'User Information'),
+                      child: userTitle(title: 'Información de usuario'),
                     ),
                     Divider(
                       thickness: 1,
                       color: Colors.grey,
                     ),
                     userListTile('Email', _email ?? '', 0, context),
-                    userListTile('Phone number', _phoneNumber.toString() ?? '',
+                    userListTile('Teléfono', _phoneNumber.toString() ?? '',
                         1, context),
-                    userListTile('Shipping address', '', 2, context),
-                    userListTile('joined date', _joinedAt ?? '', 3, context),
+                    //userListTile('Shipping address', '', 2, context),
+                    userListTile('Fecha de ingreso', _joinedAt ?? '', 3, context),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: userTitle(title: 'User settings'),
+                      child: userTitle(title: 'Configuración de Usuario'),
                     ),
                     Divider(
                       thickness: 1,
@@ -239,17 +237,17 @@ class _UserInfoState extends State<UserInfo> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text('Sign out'),
+                                          child: Text('Logout'),
                                         ),
                                       ],
                                     ),
-                                    content: Text('Do you wanna Sign out?'),
+                                    content: Text('Cerrar sesión?'),
                                     actions: [
                                       TextButton(
                                           onPressed: () async {
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Cancel')),
+                                          child: Text('Cancelar')),
                                       TextButton(
                                           onPressed: () async {
                                             await _auth.signOut().then(
@@ -264,7 +262,7 @@ class _UserInfoState extends State<UserInfo> {
                                   );
                                 });
                           },
-                          title: Text('Logout'),
+                          title: Text('Salir'),
                           leading: Icon(Icons.exit_to_app_rounded),
                         ),
                       ),
