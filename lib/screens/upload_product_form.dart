@@ -401,28 +401,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
                             DropdownButton<String>(
                               items: [
                                 DropdownMenuItem<String>(
-                                  child: Text('Phones'),
-                                  value: 'Phones',
+                                  child: Text('Yoga'),
+                                  value: 'Yoga',
                                 ),
                                 DropdownMenuItem<String>(
-                                  child: Text('Clothes'),
-                                  value: 'Clothes',
+                                  child: Text('Stretching'),
+                                  value: 'Stretching',
                                 ),
                                 DropdownMenuItem<String>(
-                                  child: Text('Beauty & health'),
-                                  value: 'Beauty',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Shoes'),
-                                  value: 'Shoes',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Funiture'),
-                                  value: 'Funiture',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Watches'),
-                                  value: 'Watches',
+                                  child: Text('Fitness'),
+                                  value: 'Fitness',
                                 ),
                               ],
                               onChanged: (String value) {
@@ -471,36 +459,12 @@ class _UploadProductFormState extends State<UploadProductForm> {
                             DropdownButton<String>(
                               items: [
                                 DropdownMenuItem<String>(
-                                  child: Text('Brandless'),
-                                  value: 'Brandless',
+                                  child: Text('GMP'),
+                                  value: 'GMP',
                                 ),
                                 DropdownMenuItem<String>(
-                                  child: Text('Addidas'),
-                                  value: 'Addidas',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Apple'),
-                                  value: 'Apple',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Dell'),
-                                  value: 'Dell',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('H&M'),
-                                  value: 'H&M',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Nike'),
-                                  value: 'Nike',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Samsung'),
-                                  value: 'Samsung',
-                                ),
-                                DropdownMenuItem<String>(
-                                  child: Text('Huawei'),
-                                  value: 'Huawei',
+                                  child: Text('Proyec'),
+                                  value: 'Proyec',
                                 ),
                               ],
                               onChanged: (String value) {

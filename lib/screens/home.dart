@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                 width: double.infinity,
                 height: 180,
                 child: ListView.builder(
-                  itemCount: 7,
+                  itemCount: categories.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext ctx, int index) {
                     return CategoryWidget(

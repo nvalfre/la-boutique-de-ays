@@ -2,6 +2,21 @@ import 'package:la_boutique_de_a_y_s_app/inner_screens/categories_feeds.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
 import 'package:flutter/material.dart';
 
+final List<Map<String, Object>> categories = [
+  {
+    'categoryName': 'Fitness',
+    'categoryImagesPath': 'assets/images/fitness.jpg',
+  },
+  {
+    'categoryName': 'Stretching',
+    'categoryImagesPath': 'assets/images/stretching.jpg',
+  },
+  {
+    'categoryName': 'Yoga',
+    'categoryImagesPath': 'assets/images/yoga.jpg',
+  },
+];
+
 class CategoryWidget extends StatefulWidget {
   CategoryWidget({Key key, this.index}) : super(key: key);
   final int index;
@@ -11,21 +26,6 @@ class CategoryWidget extends StatefulWidget {
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {
-  List<Map<String, Object>> categories = [
-    {
-      'categoryName': 'Fitness',
-      'categoryImagesPath': 'assets/images/fitness.jpg',
-    },
-    {
-      'categoryName': 'Stretching',
-      'categoryImagesPath': 'assets/images/stretching.jpg',
-    },
-    {
-      'categoryName': 'Yoga',
-      'categoryImagesPath': 'assets/images/yoga.jpg',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Stack(
