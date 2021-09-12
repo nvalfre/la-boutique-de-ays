@@ -1,7 +1,7 @@
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/auth/login.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/auth/sign_up.dart';
-import 'package:la_boutique_de_a_y_s_app/screens/bottom_bar.dart';
+import 'package:la_boutique_de_a_y_s_app/screens/top_app_bar.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -124,8 +124,9 @@ class _LandingPageState extends State<LandingPage>
         //   'https://image.flaticon.com/icons/png/128/564/564619.png',
         //   fit: BoxFit.contain,
         // ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Container(),
         fit: BoxFit.cover,
+        color: Colors.white,
         height: double.infinity,
         width: double.infinity,
         alignment: FractionalOffset(_animation.value, 0),
@@ -302,13 +303,13 @@ class _LandingPageState extends State<LandingPage>
   }
 
   static FadeInImage buildLogo() {
-    var size = 500.0;
+    var size = 400.0;
     return FadeInImage(
       width: size,
       height: size,
       image: AssetImage('assets/logo/la-boutique-logo.gif'),
       placeholder: AssetImage('assets/logo/la-boutique-logo.gif'),
-      fit: BoxFit.cover,
+      fit: BoxFit.fill,
     );
   }
 }

@@ -7,14 +7,14 @@ import 'cart/cart.dart';
 import 'feeds.dart';
 import 'home.dart';
 
-class BottomBarScreen extends StatefulWidget {
+class TopBarScreen extends StatefulWidget {
   static const routeName = '/BottomBarScreen';
 
   @override
-  _BottomBarScreenState createState() => _BottomBarScreenState();
+  _TopBarScreenState createState() => _TopBarScreenState();
 }
 
-class _BottomBarScreenState extends State<BottomBarScreen>
+class _TopBarScreenState extends State<TopBarScreen>
     with SingleTickerProviderStateMixin {
   int _selectedPageIndex = 1;
   List<Object> pages;
@@ -65,7 +65,9 @@ class _BottomBarScreenState extends State<BottomBarScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: getTabBarView(_tabController),
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,

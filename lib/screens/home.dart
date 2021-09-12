@@ -89,7 +89,8 @@ class _HomeState extends State<Home> {
               height: 190.0,
               width: double.infinity,
               child: Carousel(
-                boxFit: BoxFit.fill,
+                boxFit: BoxFit.cover,
+                //boxFit: BoxFit.fill,
                 autoplay: true,
                 animationCurve: Curves.fastOutSlowIn,
                 animationDuration: Duration(milliseconds: 1000),

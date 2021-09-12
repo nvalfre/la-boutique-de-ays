@@ -17,7 +17,7 @@ import 'provider/cart_provider.dart';
 import 'provider/favs_provider.dart';
 import 'screens/auth/login.dart';
 import 'screens/auth/sign_up.dart';
-import 'screens/bottom_bar.dart';
+import 'screens/top_app_bar.dart';
 import 'screens/cart/cart.dart';
 import 'screens/feeds.dart';
 import 'screens/user_state.dart';
@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                         CategoriesFeedsScreen(),
                     LoginScreen.routeName: (ctx) => LoginScreen(),
                     SignUpScreen.routeName: (ctx) => SignUpScreen(),
-                    BottomBarScreen.routeName: (ctx) => BottomBarScreen(),
+                    TopBarScreen.routeName: (ctx) => TopBarScreen(),
                     UploadProductForm.routeName: (ctx) => UploadProductForm(),
                     ForgetPassword.routeName: (ctx) => ForgetPassword(),
                     OrderScreen.routeName: (ctx) => OrderScreen(),
