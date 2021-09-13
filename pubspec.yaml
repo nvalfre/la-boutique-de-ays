@@ -35,7 +35,6 @@ dependencies:
   uuid: ^3.0.4
   http: ^0.13.3
   progress_dialog: ^1.2.2
-  stripe_payment: ^1.1.1
   fluttertoast: ^8.0.7
 
 dev_dependencies:
