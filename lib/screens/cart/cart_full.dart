@@ -89,8 +89,8 @@ class _CartFullState extends State<CartFull> {
                             // splashColor: ,
                             onTap: () {
                               globalMethods.showDialogg(
-                                  'Remove item!',
-                                  'Product will be removed from the cart!',
+                                  'Eliminar producto!',
+                                  'Se eliminara el producto del carrito!',
                                   () => cartProvider
                                       .removeItem(widget.productId), context);
                               //
@@ -110,7 +110,7 @@ class _CartFullState extends State<CartFull> {
                     ),
                     Row(
                       children: [
-                        Text('Price:'),
+                        Text('Total:'),
                         SizedBox(
                           width: 5,
                         ),
@@ -142,13 +142,13 @@ class _CartFullState extends State<CartFull> {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Ships Free',
-                          style: TextStyle(
-                              color: themeChange.darkTheme
-                                  ? Colors.brown.shade900
-                                  : Theme.of(context).accentColor),
-                        ),
+                        // Text(
+                        //   'Ships Free',
+                        //   style: TextStyle(
+                        //       color: themeChange.darkTheme
+                        //           ? Colors.brown.shade900
+                        //           : Theme.of(context).accentColor),
+                        // ),
                         Spacer(),
                         Material(
                           color: Colors.transparent,

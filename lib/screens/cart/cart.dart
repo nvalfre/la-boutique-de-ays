@@ -1,11 +1,12 @@
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
+import 'package:la_boutique_de_a_y_s_app/models/cart_attr.dart';
+import 'package:la_boutique_de_a_y_s_app/models/product.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/cart_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/whatsapp.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -31,7 +32,7 @@ class _CartScreenState extends State<CartScreen> {
   var response;
   Future<void> payWithCard({int amount}) async {
     ProgressDialog dialog = ProgressDialog(context);
-    dialog.style(message: 'Please wait...');
+    dialog.style(message: 'Porfavor espera...');
     await dialog.show();
     await dialog.hide();
     print('response : ${response.success}');
@@ -52,16 +53,16 @@ class _CartScreenState extends State<CartScreen> {
             bottomSheet: checkoutSection(context, cartProvider.totalAmount),
             appBar: AppBar(
               backgroundColor: Theme.of(context).backgroundColor,
-              title: Text('Cart (${cartProvider.getCartItems.length})'),
+              title: Text('Carrito (${cartProvider.getCartItems.length})'),
               actions: [
                 IconButton(
                   onPressed: () {
                     globalMethods.showDialogg(
-                        'Clear cart!',
-                        'Your cart will be cleared!',
+                        'Vaciar carrito!',
+                        'Se vaciara el carrito!',
                         () => cartProvider.clearCart(),
                         context);
-                    // cartProvider.clearCart();
+                    // cartProvider.clearCart(); //TODO
                   },
                   icon: Icon(MyAppIcons.trash),
                 )
@@ -120,54 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   child: Material(
                     color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(30),
-                      onTap: () async {
-                        double amountInCents = subtotal * 1000;
-                        int intengerAmount = (amountInCents / 10).ceil();
-                        await payWithCard(amount: intengerAmount);
-                        if (response.success == true) {
-                          User user = _auth.currentUser;
-                          final _uid = user.uid;
-                          cartProvider.getCartItems
-                              .forEach((key, orderValue) async {
-                            final orderId = uuid.v4();
-                            try {
-                              await FirebaseFirestore.instance
-                                  .collection('order')
-                                  .doc(orderId)
-                                  .set({
-                                'orderId': orderId,
-                                'userId': _uid,
-                                'productId': orderValue.productId,
-                                'title': orderValue.title,
-                                'price': orderValue.price * orderValue.quantity,
-                                'imageUrl': orderValue.imageUrl,
-                                'quantity': orderValue.quantity,
-                                'orderDate': Timestamp.now(),
-                              });
-                            } catch (err) {
-                              print('error occured $err');
-                            }
-                          });
-                        } else {
-                          globalMethods.authErrorHandle(
-                              'Please enter your true information', context);
-                        }
-                      },
-                      splashColor: Theme.of(ctx).splashColor,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Checkout',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Theme.of(ctx).textSelectionColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
+                    child: OpenWhatsapp(transformMap(cartProvider.getCartItems))
                   ),
                 ),
               ),
@@ -175,12 +129,12 @@ class _CartScreenState extends State<CartScreen> {
               Text(
                 'Total:',
                 style: TextStyle(
-                    color: Theme.of(ctx).textSelectionColor,
+                    color: Colors.black54,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                'US ${subtotal.toStringAsFixed(3)}',
+                '\$ ${subtotal.toStringAsFixed(3)}',
                 //textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.blue,
@@ -190,5 +144,22 @@ class _CartScreenState extends State<CartScreen> {
             ],
           ),
         ));
+  }
+
+  List<Product> transformMap(Map<String, CartAttr> getCartItems) {
+    List<Product> list = [];
+    getCartItems.forEach((key, value) {
+      list.add(transform(value));
+    });
+    return list;
+  }
+
+  Product transform(CartAttr value) {
+    return Product(
+        id: value.productId,
+        title: value.title,
+        price: value.price,
+        imageUrl: value.imageUrl,
+        quantity: value.quantity);
   }
 }

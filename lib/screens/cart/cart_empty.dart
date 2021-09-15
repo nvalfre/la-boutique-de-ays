@@ -62,7 +62,7 @@ class CartEmpty extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).textSelectionColor,
-                  fontSize: 26,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600),
             ),
           ),

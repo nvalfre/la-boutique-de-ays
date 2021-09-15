@@ -28,7 +28,7 @@ class Products with ChangeNotifier {
               imageUrl: element.get('productImage'),
               brand: element.get('productBrand'),
               productCategoryName: element.get('productCategory'),
-              quantity: element.get('quantity'),
+              quantity: element.get('productQuantity'),
               isPopular: true),
         );
       });
@@ -52,7 +52,7 @@ class Products with ChangeNotifier {
             imageUrl: element.get('productImage'),
             brand: element.get('productBrand'),
             productCategoryName: element.get('productCategory'),
-            quantity: element.get('quantity'),
+            quantity: element.get('productQuantity'),
             isPopular: true),
       );
     });

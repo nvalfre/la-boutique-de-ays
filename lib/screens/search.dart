@@ -131,7 +131,7 @@ class _SearchState extends State<Search> {
                         height: 50,
                       ),
                       Text(
-                        'No results found',
+                        'No se encontraron resultados',
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.w700),
                       ),

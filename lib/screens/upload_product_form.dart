@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/DecimalNumberFormatter.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadProductForm extends StatefulWidget {
@@ -22,7 +23,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
   final _formKey = GlobalKey<FormState>();
 
   var _productTitle = '';
-  var _productPrice = '';
+  var _productPrice = 0.00;
   var _productCategory = '';
   var _productBrand = '';
   var _productDescription = '';
@@ -37,6 +38,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
   bool _isLoading = false;
   String url;
   var uuid = Uuid();
+
   showAlertDialog(BuildContext context, String title, String body) {
     // show the dialog
     showDialog(
@@ -93,7 +95,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
           final productId = uuid.v4();
           await FirebaseFirestore.instance
               .collection('products')
-              .doc(productId)//TODO cambiar el set por un factory from map.
+              .doc(productId) //TODO cambiar el set por un factory from map.
               .set({
             'productId': productId,
             'productTitle': _productTitle,
@@ -183,7 +185,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                           child: Container(
                               height: 40,
                               width: 40,
-                              child: CircularProgressIndicator()))
+                              child: LinearProgressIndicator()))
                       : Text('Agregar producto',
                           style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.center),
@@ -251,23 +253,24 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               flex: 1,
                               child: TextFormField(
                                 key: ValueKey('Precio \$'),
-                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^\d+\.?\d{0,2}')),
+                                ],
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return 'El precio no esta cargado';
                                   }
                                   return null;
                                 },
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
                                 decoration: InputDecoration(
                                   labelText: 'Precio \$',
                                 ),
                                 //obscureText: true,
                                 onSaved: (value) {
-                                  _productPrice = value;
+                                  _productPrice = double.parse(value);
                                 },
                               ),
                             ),

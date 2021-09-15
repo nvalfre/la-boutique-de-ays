@@ -10,6 +10,7 @@ import 'package:la_boutique_de_a_y_s_app/screens/wishlist/wishlist.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/feeds_products.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/whatsapp.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -188,7 +189,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'No reviews yet',
+                                'Aun sin reseñas',
                                 style: TextStyle(
                                     color: Theme.of(context).textSelectionColor,
                                     fontWeight: FontWeight.w600,
@@ -198,7 +199,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                'Be the first review!',
+                                'Dejanos tus comentarios!',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 20.0,
@@ -275,7 +276,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: IconButton(
                         icon: Icon(
-                          MyAppIcons.wishlist,
+                          favs.getFavsItems.length > 0 ? Icons.favorite_outlined : MyAppIcons.wishlist,
                           color: ColorsConsts.favColor,
                         ),
                         onPressed: () {
@@ -318,7 +319,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: RaisedButton(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       shape: RoundedRectangleBorder(side: BorderSide.none),
-                      color: Colors.redAccent.shade400,
+                      color: Colors.green,
                       onPressed:
                           cartProvider.getCartItems.containsKey(productId)
                               ? () {}
@@ -340,40 +341,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    height: 50,
-                    child: RaisedButton(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(side: BorderSide.none),
-                      color: Theme.of(context).backgroundColor,
-                      onPressed: () {},
-                      child: Row(
-                        children: [
-                          Text(
-                            'Comprar'.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).textSelectionColor),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.payment,
-                            color: Colors.green.shade700,
-                            size: 19,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: OpenWhatsapp([prodAttr]),
                 ),
                 Expanded(
                   flex: 1,
                   child: Container(
                     color: themeState.darkTheme
                         ? Theme.of(context).disabledColor
-                        : ColorsConsts.subTitle,
+                        : Colors.white,
                     height: 50,
                     child: InkWell(
                       splashColor: ColorsConsts.favColor,
@@ -384,12 +359,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: Center(
                         child: Icon(
                           favsProvider.getFavsItems.containsKey(productId)
-                              ? Icons.favorite
+                              ? Icons.favorite_outlined
                               : MyAppIcons.wishlist,
                           color:
                               favsProvider.getFavsItems.containsKey(productId)
                                   ? Colors.red
-                                  : ColorsConsts.white,
+                                  : Colors.redAccent,
                         ),
                       ),
                     ),

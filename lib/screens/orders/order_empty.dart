@@ -24,7 +24,7 @@ class OrderEmpty extends StatelessWidget {
           ),
         ),
         Text(
-          'Your order is Empty',
+          'Tu orden esta vacia.',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).textSelectionColor,
@@ -35,7 +35,7 @@ class OrderEmpty extends StatelessWidget {
           height: 30,
         ),
         Text(
-          'Looks Like You didn\'t \n order anything yet',
+          'Parece que aun no compraste nada.',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: themeChange.darkTheme
@@ -48,8 +48,8 @@ class OrderEmpty extends StatelessWidget {
           height: 30,
         ),
         Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.06,
+          width: MediaQuery.of(context).size.width * 0.93,
+          height: MediaQuery.of(context).size.height * 0.03,
           child: RaisedButton(
             onPressed: () { Navigator.of(context).pushNamed(Marketplace.routeName);},
             shape: RoundedRectangleBorder(
@@ -58,11 +58,11 @@ class OrderEmpty extends StatelessWidget {
             ),
             color: Colors.redAccent,
             child: Text(
-              'Shop now'.toUpperCase(),
+              'Compra ahora'.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).textSelectionColor,
-                  fontSize: 26,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600),
             ),
           ),

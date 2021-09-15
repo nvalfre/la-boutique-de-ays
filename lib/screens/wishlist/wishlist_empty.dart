@@ -23,7 +23,7 @@ class WishlistEmpty extends StatelessWidget {
           ),
         ),
         Text(
-          'Your Wishlist Is Empty',
+          'Tu lista de favoritos esta vacia',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).textSelectionColor,
