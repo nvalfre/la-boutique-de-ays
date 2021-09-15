@@ -76,7 +76,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
       _formKey.currentState.save();
       try {
         if (_pickedImage == null) {
-          _globalMethods.authErrorHandle('Please pick an image', context);
+          _globalMethods.authErrorHandle('Porfavor elige una imagen', context);
         } else {
           setState(() {
             _isLoading = true;
@@ -93,7 +93,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
           final productId = uuid.v4();
           await FirebaseFirestore.instance
               .collection('products')
-              .doc(productId)
+              .doc(productId)//TODO cambiar el set por un factory from map.
               .set({
             'productId': productId,
             'productTitle': _productTitle,
@@ -438,7 +438,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   child: TextFormField(
                                     controller: _brandController,
 
-                                    key: ValueKey('Brand'),
+                                    key: ValueKey('Marca'),
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'Falta la marca';
@@ -517,7 +517,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   key: ValueKey('Cantidad'),
                                   validator: (value) {
                                     if (value.isEmpty) {
-                                      return 'Quantity is missed';
+                                      return 'Falta elegir cantidad';
                                     }
                                     return null;
                                   },

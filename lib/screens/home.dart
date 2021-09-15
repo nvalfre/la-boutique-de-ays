@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: BackdropScaffold(
         frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        headerHeight: MediaQuery.of(context).size.height * 0.25,
+        headerHeight: MediaQuery.of(context).size.height * 0.40,
         appBar: BackdropAppBar(
           title: Center(child: Text('La boutique de AyS')),
           leading: BackdropToggleButton(icon: AnimatedIcons.home_menu),

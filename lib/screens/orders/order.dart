@@ -1,11 +1,7 @@
-import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
-import 'package:la_boutique_de_a_y_s_app/provider/cart_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
-import 'package:la_boutique_de_a_y_s_app/services/payment.dart';
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'order_empty.dart';
@@ -24,21 +20,9 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    StripeService.init();
   }
 
-  void payWithCard({int amount}) async {
-    ProgressDialog dialog = ProgressDialog(context);
-    dialog.style(message: 'Please wait...');
-    await dialog.show();
-    var response = await StripeService.payWithNewCard(
-        currency: 'USD', amount: amount.toString());
-    await dialog.hide();
-    print('response : ${response.message}');
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(response.message),
-      duration: Duration(milliseconds: response.success == true ? 1200 : 3000),
-    ));
+  void payWithCard({int amount}) {
   }
 
   @override

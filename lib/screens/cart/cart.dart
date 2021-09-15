@@ -2,7 +2,6 @@ import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/cart_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
-import 'package:la_boutique_de_a_y_s_app/services/payment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +26,6 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    StripeService.init();
   }
 
   var response;
@@ -35,8 +33,6 @@ class _CartScreenState extends State<CartScreen> {
     ProgressDialog dialog = ProgressDialog(context);
     dialog.style(message: 'Please wait...');
     await dialog.show();
-    response = await StripeService.payWithNewCard(
-        currency: 'USD', amount: amount.toString());
     await dialog.hide();
     print('response : ${response.success}');
     Scaffold.of(context).showSnackBar(SnackBar(

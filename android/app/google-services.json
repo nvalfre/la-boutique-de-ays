@@ -29,6 +29,13 @@
             {
               "client_id": "989577719184-u2rvcfmifd6vo38633fvu9lr16u6apat.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "989577719184-qn171pn8qk794qo4bb0nl7br535ja0t4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nv.laBoutiqueDeAYSApp"
+              }
             }
           ]
         }
