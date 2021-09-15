@@ -140,7 +140,7 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
                             child: CircleAvatar(
                               radius: 16,
                               backgroundImage: NetworkImage(
-                                  "https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg"),
+                                  "assets/images/blank-user.jpg"),
                             ),
                           ),
                           SizedBox(

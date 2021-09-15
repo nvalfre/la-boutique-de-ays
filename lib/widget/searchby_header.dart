@@ -123,8 +123,8 @@ class SearchByHeader extends SliverPersistentHeaderDelegate {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       image: DecorationImage(
-                        image: NetworkImage(
-                          'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg',
+                        image: AssetImage(
+                          'assets/images/blank-user.jpg',
                         ),
                         fit: BoxFit.cover,
                       )),

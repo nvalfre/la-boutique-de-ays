@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
                 child: CircleAvatar(
                   radius: 13,
                   backgroundImage: NetworkImage(
-                      'https://cdn1.vectorstock.com/i/thumb-large/62/60/default-avatar-photo-placeholder-profile-image-vector-21666260.jpg'),
+                      'assets/images/blank-user.jpg'),
                 ),
               ),
               onPressed: () {},
