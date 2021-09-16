@@ -276,7 +276,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: IconButton(
                         icon: Icon(
-                          favs.getFavsItems.length > 0 ? Icons.favorite_outlined : MyAppIcons.wishlist,
+                          favs.getFavsItems.length > 0
+                              ? Icons.favorite_outlined
+                              : MyAppIcons.wishlist,
                           color: ColorsConsts.favColor,
                         ),
                         onPressed: () {
@@ -313,13 +315,18 @@ class _ProductDetailsState extends State<ProductDetails> {
               alignment: Alignment.bottomCenter,
               child: Row(children: [
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: Container(
                     height: 50,
-                    child: RaisedButton(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(side: BorderSide.none),
-                      color: Colors.green,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: BorderSide(color: Theme.of(context).cardColor),
+                        ),
+                      )),
                       onPressed:
                           cartProvider.getCartItems.containsKey(productId)
                               ? () {}
@@ -333,7 +340,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: Text(
                         cartProvider.getCartItems.containsKey(productId)
                             ? 'En carrito'
-                            : 'Agregar al carrito'.toUpperCase(),
+                            : 'Agregar al carrito',
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),

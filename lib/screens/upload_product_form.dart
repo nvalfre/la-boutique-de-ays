@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/mime_type_image_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:la_boutique_de_a_y_s_app/widget/DecimalNumberFormatter.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadProductForm extends StatefulWidget {
@@ -38,6 +37,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
   bool _isLoading = false;
   String url;
   var uuid = Uuid();
+  final _imageProvider = new MimeTypeImageProvider();
+
 
   showAlertDialog(BuildContext context, String title, String body) {
     // show the dialog
@@ -83,13 +84,13 @@ class _UploadProductFormState extends State<UploadProductForm> {
           setState(() {
             _isLoading = true;
           });
-          final ref = FirebaseStorage.instance
-              .ref()
-              .child('productsImages')
-              .child(_productTitle + '.jpg');
-          await ref.putFile(_pickedImage);
-          url = await ref.getDownloadURL();
-
+         // final ref = FirebaseStorage.instance
+         //     .ref()
+         //     .child('productsImages')
+         //     .child(_productTitle + '.jpg');
+         // await ref.putFile(_pickedImage);
+         // url = await ref.getDownloadURL();
+          url = await _imageProvider.uploadImage(_pickedImage);
           final User user = _auth.currentUser;
           final _uid = user.uid;
           final productId = uuid.v4();

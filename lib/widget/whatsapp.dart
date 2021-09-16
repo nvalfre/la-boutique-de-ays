@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_boutique_de_a_y_s_app/models/product.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart';
 
 class OpenWhatsapp extends StatelessWidget {
   List<Product> list;
@@ -17,19 +18,31 @@ class OpenWhatsapp extends StatelessWidget {
     return Container(
       height: 50,
       width: 100,
-      child: GestureDetector(
-        onTap: () {
-          openwhatsapp(context);
-        },
+      child: ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                side: BorderSide(color: Colors.blueAccent),
+              ),
+            )),
+        onPressed: () => openwhatsapp(context),
         child: Container(
-          color: Colors.white,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(image: AssetImage('assets/images/whatsapp-logo.jpg'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                    width: 22,
+                    height: 22,
+                    child: Image(
+                        image: AssetImage('assets/images/whatsapp-logo.png'))),
               ),
               Text(
                 "COMPRAR",
-                style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                style: TextStyle(fontSize: 16, color: Colors.white),
               )
             ],
           ),
@@ -45,21 +58,36 @@ class OpenWhatsapp extends StatelessWidget {
         "whatsapp://send?phone=" + whatsappPhone + "&text=${parsedTextUri}";
     var ios = "https://wa.me/$whatsappPhone?text=${parsedTextUri}";
     final wspNotInstalled = "No tienes instalado WhatsApp";
-    if (Platform.isIOS) {
-      //TODO
-      if (await canLaunch(ios)) {
-        await launch(ios, forceSafariVC: false);
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: new Text(wspNotInstalled), backgroundColor: Colors.red,));
-      }
+    if (kIsWeb) {
+      await launchAndroidOrWeb(android, context, wspNotInstalled);
     } else {
-      if (await canLaunch(android)) {
-        await launch(android);
+      if (Platform.isIOS) {
+        await launchIos(ios, context, wspNotInstalled);
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: new Text(wspNotInstalled), backgroundColor: Colors.red));
+        await launchAndroidOrWeb(android, context, wspNotInstalled);
       }
+    }
+  }
+
+  Future<void> launchIos(
+      String ios, BuildContext context, String wspNotInstalled) async {
+    if (await canLaunch(ios)) {
+      await launch(ios, forceSafariVC: false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: new Text(wspNotInstalled),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  Future<void> launchAndroidOrWeb(
+      String android, BuildContext context, String wspNotInstalled) async {
+    if (await canLaunch(android)) {
+      await launch(android);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: new Text(wspNotInstalled), backgroundColor: Colors.red));
     }
   }
 }
