@@ -70,19 +70,20 @@ class OpenWhatsapp extends StatelessWidget {
   }
 
   String parse(List<Product> list) {
-   String productData = "";
-   list.forEach((element) {
-     productData += 'Product: ${element.toString()}  \n';
-     productData +=  'id: ${element.id} \n ';
-     productData +=  'title: ${element.title}\n ';
-     productData +=  'description: ${element.description}\n ';
-     productData +=  'price: ${element.price}\n ';
-     productData +=  'imageUrl: ${element.imageUrl}\n ';
-     productData +=  'brand: ${element.brand}\n ';
-     productData +=  'productCategoryName: ${element.productCategoryName}\n ';
-     productData +=  'quantity: ${element.quantity}\n\n ';
-   });
-   return productData;
+    String productData = "";
+    productData += list.length > 1
+        ? 'Hola! me interesan estos productos:\n'
+        :  'Hola! me interesa este producto:\n';
+    list.forEach((element) {
+      productData += 'Producto: ${element.title}\n ';
+      productData += 'Descripción: ${element.description}\n ';
+      productData += 'Precio: ${element.price}\n ';
+      productData += 'Marca: ${element.brand}\n ';
+      productData += 'Cantidad: ${element.quantity}\n\n ';
+    });
+    productData += '¿Me podrias dar mas información? \n'
+        'Gracias!';
+    return productData;
   }
 
   Future<void> launchIos(
