@@ -101,12 +101,13 @@ class BackLayerMenu extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50.0)),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50.0),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'assets/images/blank-user.jpg'),
-                            fit: BoxFit.fill,
-                          )),
+                        borderRadius: BorderRadius.circular(50.0),
+                        image: DecorationImage(
+                            image: AssetImage(
+                              'assets/images/blank-user.jpg',
+                            ),
+                            fit: BoxFit.fill),
+                      ),
                     ),
                   ),
                 ),
@@ -140,6 +141,7 @@ class BackLayerMenu extends StatelessWidget {
     MyAppIcons.wishlist,
     MyAppIcons.upload
   ];
+
   void navigateTo(BuildContext ctx, String routeName) {
     Navigator.of(ctx).pushNamed(
       routeName,

@@ -52,8 +52,8 @@ class OpenWhatsapp extends StatelessWidget {
   }
 
   openwhatsapp(BuildContext context) async {
-    const whatsappPhone = "+5493517714883";
-    var parsedTextUri = Uri.parse(list.toString());
+    const whatsappPhone = "+5493513702010";
+    var parsedTextUri = Uri.parse(parse(list));
     var android =
         "whatsapp://send?phone=" + whatsappPhone + "&text=${parsedTextUri}";
     var ios = "https://wa.me/$whatsappPhone?text=${parsedTextUri}";
@@ -67,6 +67,22 @@ class OpenWhatsapp extends StatelessWidget {
         await launchAndroidOrWeb(android, context, wspNotInstalled);
       }
     }
+  }
+
+  String parse(List<Product> list) {
+   String productData = "";
+   list.forEach((element) {
+     productData += 'Product: ${element.toString()}  \n';
+     productData +=  'id: ${element.id} \n ';
+     productData +=  'title: ${element.title}\n ';
+     productData +=  'description: ${element.description}\n ';
+     productData +=  'price: ${element.price}\n ';
+     productData +=  'imageUrl: ${element.imageUrl}\n ';
+     productData +=  'brand: ${element.brand}\n ';
+     productData +=  'productCategoryName: ${element.productCategoryName}\n ';
+     productData +=  'quantity: ${element.quantity}\n\n ';
+   });
+   return productData;
   }
 
   Future<void> launchIos(

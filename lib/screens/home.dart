@@ -60,10 +60,10 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 13,
-                  backgroundImage: NetworkImage(
-                      'assets/images/blank-user.jpg'),
-                ),
-              ),
+                  backgroundImage: AssetImage(
+                        'assets/images/blank-user.jpg',
+                      ),
+              ),),
               onPressed: () {},
             )
           ],

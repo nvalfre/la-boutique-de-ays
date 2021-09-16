@@ -139,8 +139,9 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
                           Center(
                             child: CircleAvatar(
                               radius: 16,
-                              backgroundImage: NetworkImage(
-                                  "assets/images/blank-user.jpg"),
+                              backgroundImage: AssetImage(
+                                    'assets/images/blank-user.jpg',
+                                  ),
                             ),
                           ),
                           SizedBox(
