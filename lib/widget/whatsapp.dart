@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:la_boutique_de_a_y_s_app/models/product.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class OpenWhatsapp extends StatelessWidget {
   List<Product> list;
@@ -53,19 +54,18 @@ class OpenWhatsapp extends StatelessWidget {
 
   openwhatsapp(BuildContext context) async {
     const whatsappPhone = "+5493513702010";
-    var parsedTextUri = Uri.parse(parse(list));
-    var android =
-        "whatsapp://send?phone=" + whatsappPhone + "&text=${parsedTextUri}";
-    var ios = "https://wa.me/$whatsappPhone?text=${parsedTextUri}";
-    final wspNotInstalled = "No tienes instalado WhatsApp";
-    if (kIsWeb) {
-      await launchAndroidOrWeb(android, context, wspNotInstalled);
+    String parsedTextUri = parse(list);
+    var withPhoneNumberAndText =
+        WhatsAppUnilink(phoneNumber: whatsappPhone, text: parsedTextUri);
+
+    if (await canLaunch('$withPhoneNumberAndText')) {
+      await launch('$withPhoneNumberAndText');
     } else {
-      if (Platform.isIOS) {
-        await launchIos(ios, context, wspNotInstalled);
-      } else {
-        await launchAndroidOrWeb(android, context, wspNotInstalled);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: new Text("No tienes instalado WhatsApp"),
+            backgroundColor: Colors.red),
+      );
     }
   }
 
@@ -73,7 +73,7 @@ class OpenWhatsapp extends StatelessWidget {
     String productData = "";
     productData += list.length > 1
         ? 'Hola! me interesan estos productos:\n'
-        :  'Hola! me interesa este producto:\n';
+        : 'Hola! me interesa este producto:\n';
     list.forEach((element) {
       productData += 'Producto: ${element.title}\n ';
       productData += 'Descripción: ${element.description}\n ';

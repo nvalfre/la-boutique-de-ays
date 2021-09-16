@@ -37,6 +37,7 @@ dependencies:
   http: ^0.13.3
   progress_dialog: ^1.2.2
   fluttertoast: ^8.0.7
+  whatsapp_unilink: ^2.0.0
 
 dev_dependencies:
   flutter_test:
