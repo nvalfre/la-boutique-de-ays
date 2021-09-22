@@ -7,7 +7,7 @@ class MainScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView(
-      children: [TopBarScreen(), UploadProductForm()],
+      children: [TopBarScreen()],
     );
   }
 }

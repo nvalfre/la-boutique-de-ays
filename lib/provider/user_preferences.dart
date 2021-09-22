@@ -26,8 +26,8 @@ class UserPreferences {
   get userRole {
     return _prefs.getString('userRole') ?? '';
   }
-  get avatar {
-    return _prefs.getString('avatar') ?? '';
+  get imageUrl {
+    return _prefs.getString('imageUrl') ?? '';
   }
   get lastProduct {
     return _prefs.getString('lastProduct') ?? '';
@@ -43,6 +43,10 @@ class UserPreferences {
 
   set userRole( String value ) {
     _prefs.setString('userRole', value);
+  }
+
+  set imageUrl( String value ) {
+    _prefs.setString('imageUrl', value);
   }
 
   set lastPage( String value ) {

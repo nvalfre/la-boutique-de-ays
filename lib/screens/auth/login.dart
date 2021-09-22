@@ -6,6 +6,7 @@ import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -34,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _submitForm() async {
-    var sharedPreferences = UserPreferences();
+    UserPreferences sharedPreferences = UserPreferences();
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
@@ -51,8 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (documentSnapshot != null && Navigator.canPop(context)){
           UserModel userModel = UserModel.fromDocumentSnapshot(documentSnapshot);
-          //sharedPreferences.saveMap(userModel.id, userModel.toJson()); //TODO ver si aca no hacemos nada y en lugar cargamos prefernecias de este usuario en general, VER TIMESTAMP
           sharedPreferences.user = userModel.id;
+          sharedPreferences.userRole = userModel.userRole;
+          sharedPreferences.imageUrl = userModel.imageUrl;
           Navigator.pop(context);
         }
       } catch (error) {

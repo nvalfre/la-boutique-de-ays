@@ -1,13 +1,22 @@
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
+import 'package:la_boutique_de_a_y_s_app/models/enum/user_role.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/upload_product_form.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/cart/cart.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class BackLayerMenu extends StatelessWidget {
+class BackLayerMenu extends StatefulWidget {
+  @override
+  _BackLayerMenuState createState() => _BackLayerMenuState();
+}
+
+class _BackLayerMenuState extends State<BackLayerMenu> {
   @override
   Widget build(BuildContext context) {
+    UserPreferences userPreferences = UserPreferences();
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -124,15 +133,22 @@ class BackLayerMenu extends StatelessWidget {
                   navigateTo(context, Marketplace.routeName);
                 }, 'Favoritos', 2),
                 const SizedBox(height: 5.0),
-                content(context, () {
-                  navigateTo(context, UploadProductForm.routeName);
-                }, 'Subir nuevo producto', 3),
+                uploadProductAdmin(userPreferences, context),
               ],
             ),
           ),
         ),
       ],
     );
+  }
+
+  Widget uploadProductAdmin(
+      UserPreferences userPreferences, BuildContext context) {
+    return userPreferences.userRole == UserRole.ADMIN.toString()
+        ? content(context, () {
+            navigateTo(context, UploadProductForm.routeName);
+          }, 'Subir nuevo producto', 3)
+        : const SizedBox(height: 5.0);
   }
 
   List _contentIcons = [
