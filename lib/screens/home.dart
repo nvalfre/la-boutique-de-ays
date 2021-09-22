@@ -3,6 +3,7 @@ import 'package:la_boutique_de_a_y_s_app/inner_screens/brands_navigation_rail.da
 import 'package:la_boutique_de_a_y_s_app/models/product.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/backlayer.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/category.dart';
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-
+    final UserPreferences userPreferences = UserPreferences();
     return Scaffold(
       body: BackdropScaffold(
         frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -60,9 +61,7 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 13,
-                  backgroundImage: AssetImage(
-                        'assets/images/blank-user.jpg',
-                      ),
+                  backgroundImage: NetworkImage(userPreferences.imageUrl),
               ),),
               onPressed: () {},
             )

@@ -9,7 +9,7 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
-  Future<void> fetchProducts() async {
+  Future<List<Product>> fetchProducts() async {
     print('Fetch method is called');
     await FirebaseFirestore.instance
         .collection('products')
@@ -33,6 +33,7 @@ class Products with ChangeNotifier {
         );
       });
     });
+    return _products;
   }
 
   Future<List<Product>> fetchProductsList() async {

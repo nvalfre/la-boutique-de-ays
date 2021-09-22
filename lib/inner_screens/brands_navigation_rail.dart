@@ -1,24 +1,31 @@
 import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:provider/provider.dart';
 
 import 'brands_rail_widget.dart';
+final ALL = 'Todos';
 
 class BrandNavigationRailScreen extends StatefulWidget {
   BrandNavigationRailScreen({Key key}) : super(key: key);
 
   static const routeName = '/brands_navigation_rail';
+
   @override
   _BrandNavigationRailScreenState createState() =>
       _BrandNavigationRailScreenState();
 }
 
 class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
+  final preferences = UserPreferences();
+  final GMP = 'GMP';
+  final PROYEC = 'Proyec';
   int _selectedIndex = 0;
   final padding = 8.0;
   String routeArgs;
   String brand;
+
   @override
   void didChangeDependencies() {
     routeArgs = ModalRoute.of(context).settings.arguments.toString();
@@ -28,42 +35,17 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
     print(routeArgs.toString());
     if (_selectedIndex == 0) {
       setState(() {
-        brand = 'Addidas';
+        brand = GMP;
       });
     }
     if (_selectedIndex == 1) {
       setState(() {
-        brand = 'Apple';
+        brand = PROYEC;
       });
     }
     if (_selectedIndex == 2) {
       setState(() {
-        brand = 'Dell';
-      });
-    }
-    if (_selectedIndex == 3) {
-      setState(() {
-        brand = 'H&M';
-      });
-    }
-    if (_selectedIndex == 4) {
-      setState(() {
-        brand = 'Nike';
-      });
-    }
-    if (_selectedIndex == 5) {
-      setState(() {
-        brand = 'Samsung';
-      });
-    }
-    if (_selectedIndex == 6) {
-      setState(() {
-        brand = 'Huawei';
-      });
-    }
-    if (_selectedIndex == 7) {
-      setState(() {
-        brand = 'All';
+        brand = ALL;
       });
     }
     super.didChangeDependencies();
@@ -72,6 +54,18 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [buildLogo(), Padding(
+          padding: const EdgeInsets.only(left: 18.0),
+          child: Text(
+            'Buscador por marcas',
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 17),
+          ),
+        ), Spacer()],),
+      ),
       body: Row(
         children: <Widget>[
           LayoutBuilder(
@@ -89,42 +83,17 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
                           _selectedIndex = index;
                           if (_selectedIndex == 0) {
                             setState(() {
-                              brand = 'Addidas';
+                              brand = GMP;
                             });
                           }
                           if (_selectedIndex == 1) {
                             setState(() {
-                              brand = 'Apple';
+                              brand = PROYEC;
                             });
                           }
                           if (_selectedIndex == 2) {
                             setState(() {
-                              brand = 'Dell';
-                            });
-                          }
-                          if (_selectedIndex == 3) {
-                            setState(() {
-                              brand = 'H&M';
-                            });
-                          }
-                          if (_selectedIndex == 4) {
-                            setState(() {
-                              brand = 'Nike';
-                            });
-                          }
-                          if (_selectedIndex == 5) {
-                            setState(() {
-                              brand = 'Samsung';
-                            });
-                          }
-                          if (_selectedIndex == 6) {
-                            setState(() {
-                              brand = 'Huawei';
-                            });
-                          }
-                          if (_selectedIndex == 7) {
-                            setState(() {
-                              brand = 'All';
+                              brand = ALL;
                             });
                           }
                           print(brand);
@@ -139,9 +108,8 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
                           Center(
                             child: CircleAvatar(
                               radius: 16,
-                              backgroundImage: AssetImage(
-                                    'assets/images/blank-user.jpg',
-                                  ),
+                              backgroundImage:
+                                  NetworkImage(preferences.imageUrl),
                             ),
                           ),
                           SizedBox(
@@ -161,14 +129,9 @@ class _BrandNavigationRailScreenState extends State<BrandNavigationRailScreen> {
                         letterSpacing: 0.8,
                       ),
                       destinations: [
-                        buildRotatedTextRailDestination('Addidas', padding),
-                        buildRotatedTextRailDestination("Apple", padding),
-                        buildRotatedTextRailDestination("Dell", padding),
-                        buildRotatedTextRailDestination("H&M", padding),
-                        buildRotatedTextRailDestination("Nike", padding),
-                        buildRotatedTextRailDestination("Samsung", padding),
-                        buildRotatedTextRailDestination("Huawei", padding),
-                        buildRotatedTextRailDestination("All", padding),
+                        buildRotatedTextRailDestination(GMP, padding),
+                        buildRotatedTextRailDestination(PROYEC, padding),
+                        buildRotatedTextRailDestination(ALL, padding),
                       ],
                     ),
                   ),
@@ -199,17 +162,28 @@ NavigationRailDestination buildRotatedTextRailDestination(
   );
 }
 
+FadeInImage buildLogo() {
+  return FadeInImage(
+    width: 50,
+    height: 50,
+    image: AssetImage('assets/logo/la-boutique-logo.gif'),
+    placeholder: AssetImage('assets/logo/la-boutique-logo.gif'),
+    fit: BoxFit.cover,
+  );
+}
+
 class ContentSpace extends StatelessWidget {
   // final int _selectedIndex;
 
   final String brand;
+
   ContentSpace(BuildContext context, this.brand);
 
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context, listen: false);
     final productsBrand = productsData.findByBrand(brand);
-    if (brand == 'All') {
+    if (brand == ALL) {
       for (int i = 0; i < productsData.products.length; i++) {
         productsBrand.add(productsData.products[i]);
       }
@@ -218,7 +192,7 @@ class ContentSpace extends StatelessWidget {
     print('brand $brand');
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+        padding: const EdgeInsets.fromLTRB(14, 8, 0, 0),
         child: MediaQuery.removePadding(
           removeTop: true,
           context: context,
@@ -227,12 +201,15 @@ class ContentSpace extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                   Icon(Feather.database, size: 80,),
+                    Icon(
+                      Feather.database,
+                      size: 80,
+                    ),
                     SizedBox(
                       height: 40,
                     ),
                     Text(
-                      'No products related to this brand',
+                      'No existen productos relacionados a la marca',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 22),

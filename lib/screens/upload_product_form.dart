@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
+import 'package:la_boutique_de_a_y_s_app/models/enum/user_role.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/mime_type_image_provider.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/feeds_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadProductForm extends StatefulWidget {
@@ -20,13 +23,14 @@ class UploadProductForm extends StatefulWidget {
 
 class _UploadProductFormState extends State<UploadProductForm> {
   final _formKey = GlobalKey<FormState>();
+  final UserPreferences userPreferences = UserPreferences();
 
   var _productTitle = '';
   var _productPrice = 0.00;
   var _productCategory = '';
   var _productBrand = '';
   var _productDescription = '';
-  var _productQuantity = '';
+  var _productQuantity = 0;
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _brandController = TextEditingController();
   String _categoryValue;
@@ -84,12 +88,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
           setState(() {
             _isLoading = true;
           });
-         // final ref = FirebaseStorage.instance
-         //     .ref()
-         //     .child('productsImages')
-         //     .child(_productTitle + '.jpg');
-         // await ref.putFile(_pickedImage);
-         // url = await ref.getDownloadURL();
           url = await _imageProvider.uploadImage(_pickedImage);
           final User user = _auth.currentUser;
           final _uid = user.uid;
@@ -157,7 +155,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return userPreferences.userRole == UserRole.ADMIN.toString() ?
+    Scaffold(
       bottomSheet: Container(
         height: kBottomNavigationBarHeight * 0.8,
         width: double.infinity,
@@ -171,7 +170,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
           ),
         ),
         child: Material(
-          color: Theme.of(context).backgroundColor,
+          color: Theme
+              .of(context)
+              .backgroundColor,
           child: InkWell(
             onTap: _trySubmit,
             splashColor: Colors.grey,
@@ -183,13 +184,13 @@ class _UploadProductFormState extends State<UploadProductForm> {
                   padding: const EdgeInsets.only(right: 2),
                   child: _isLoading
                       ? Center(
-                          child: Container(
-                              height: 40,
-                              width: 40,
-                              child: LinearProgressIndicator()))
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          child: LinearProgressIndicator()))
                       : Text('Agregar producto',
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center),
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center),
                 ),
                 GradientIcon(
                   Feather.upload,
@@ -286,34 +287,38 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               //  flex: 2,
                               child: this._pickedImage == null
                                   ? Container(
-                                      margin: EdgeInsets.all(10),
-                                      height: 200,
-                                      width: 200,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(width: 1),
-                                        borderRadius: BorderRadius.circular(4),
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                      ),
-                                    )
+                                margin: EdgeInsets.all(10),
+                                height: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                  borderRadius: BorderRadius.circular(4),
+                                  color:
+                                  Theme
+                                      .of(context)
+                                      .backgroundColor,
+                                ),
+                              )
                                   : Container(
-                                      margin: EdgeInsets.all(10),
-                                      height: 200,
-                                      width: 200,
-                                      child: Container(
-                                        height: 200,
-                                        // width: 200,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              Theme.of(context).backgroundColor,
-                                        ),
-                                        child: Image.file(
-                                          this._pickedImage,
-                                          fit: BoxFit.contain,
-                                          alignment: Alignment.center,
-                                        ),
-                                      ),
-                                    ),
+                                margin: EdgeInsets.all(10),
+                                height: 200,
+                                width: 200,
+                                child: Container(
+                                  height: 200,
+                                  // width: 200,
+                                  decoration: BoxDecoration(
+                                    color:
+                                    Theme
+                                        .of(context)
+                                        .backgroundColor,
+                                  ),
+                                  child: Image.file(
+                                    this._pickedImage,
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.center,
+                                  ),
+                                ),
+                              ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,7 +334,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       'Camara',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        color: Theme.of(context)
+                                        color: Theme
+                                            .of(context)
                                             .textSelectionColor,
                                       ),
                                     ),
@@ -345,7 +351,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       'Galeria',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        color: Theme.of(context)
+                                        color: Theme
+                                            .of(context)
                                             .textSelectionColor,
                                       ),
                                     ),
@@ -529,7 +536,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     labelText: 'Cantidad',
                                   ),
                                   onSaved: (value) {
-                                    _productQuantity = value;
+                                    _productQuantity = int.parse(value);
                                   },
                                 ),
                               ),
@@ -548,16 +555,15 @@ class _UploadProductFormState extends State<UploadProductForm> {
           ],
         ),
       ),
-    );
+    )
+    : FeedDialog();
   }
 }
 
 class GradientIcon extends StatelessWidget {
-  GradientIcon(
-    this.icon,
-    this.size,
-    this.gradient,
-  );
+  GradientIcon(this.icon,
+      this.size,
+      this.gradient,);
 
   final IconData icon;
   final double size;

@@ -20,9 +20,12 @@ class Marketplace extends StatefulWidget {
 }
 
 class _MarketplaceState extends State<Marketplace> {
+  List<Product> _productsList;
   Future<void> _getProductsOnRefresh() async {
-    await Provider.of<Products>(context, listen: false).fetchProducts();
-    setState(() {});
+    List<Product> list = await Provider.of<Products>(context, listen: false).fetchProducts();
+    setState(() {
+      _productsList = list;
+    });
   }
 
   @override
@@ -32,9 +35,9 @@ class _MarketplaceState extends State<Marketplace> {
       context,
     );
 
-    List<Product> productsList = productsProvider.products;
+    _productsList = productsProvider.products;
     if (popular == 'popular') {
-      productsList = productsProvider.popularProducts;
+      _productsList = productsProvider.popularProducts;
     }
     return Scaffold(
       appBar: AppBar(
@@ -92,9 +95,9 @@ class _MarketplaceState extends State<Marketplace> {
           childAspectRatio: 240 / 420,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          children: List.generate(productsList.length, (index) {
+          children: List.generate(_productsList.length, (index) {
             return ChangeNotifierProvider.value(
-              value: productsList[index],
+              value: _productsList[index],
               child: FeedProducts(),
             );
           }),

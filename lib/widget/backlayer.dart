@@ -16,7 +16,7 @@ class BackLayerMenu extends StatefulWidget {
 class _BackLayerMenuState extends State<BackLayerMenu> {
   @override
   Widget build(BuildContext context) {
-    UserPreferences userPreferences = UserPreferences();
+    final UserPreferences userPreferences = UserPreferences();
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -112,9 +112,7 @@ class _BackLayerMenuState extends State<BackLayerMenu> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50.0),
                         image: DecorationImage(
-                            image: AssetImage(
-                              'assets/images/blank-user.jpg',
-                            ),
+                            image: NetworkImage(userPreferences.imageUrl),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -143,7 +141,7 @@ class _BackLayerMenuState extends State<BackLayerMenu> {
   }
 
   Widget uploadProductAdmin(
-      UserPreferences userPreferences, BuildContext context) {
+      final UserPreferences userPreferences, BuildContext context) {
     return userPreferences.userRole == UserRole.ADMIN.toString()
         ? content(context, () {
             navigateTo(context, UploadProductForm.routeName);

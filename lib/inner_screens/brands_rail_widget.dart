@@ -12,8 +12,8 @@ class BrandsNavigationRail extends StatelessWidget {
           arguments: productsAttributes.id),
       child: Container(
         //  color: Colors.red,
-        padding: EdgeInsets.only(left: 5.0, right: 5.0),
-        margin: EdgeInsets.only(right: 20.0, bottom: 5, top: 18),
+        padding: EdgeInsets.only(left: 0, right: 5.0),
+        margin: EdgeInsets.only(right: 12.0, bottom: 5, top: 18),
         constraints: BoxConstraints(
             minHeight: 150, minWidth: double.infinity, maxHeight: 180),
         child: Row(
@@ -67,7 +67,7 @@ class BrandsNavigationRail extends StatelessWidget {
                       height: 20.0,
                     ),
                     FittedBox(
-                      child: Text('US ${productsAttributes.price} \$',
+                      child: Text('\$ ${productsAttributes.price}',
                           maxLines: 1,
                           style: TextStyle(
                             color: Colors.red,
