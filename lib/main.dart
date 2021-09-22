@@ -3,6 +3,7 @@ import 'package:la_boutique_de_a_y_s_app/inner_screens/product_details.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/dark_theme_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/wishlist/wishlist.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,9 @@ import 'screens/cart/cart.dart';
 import 'screens/feeds.dart';
 import 'screens/user_state.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await UserPreferences().initUserPreferences();
   runApp(MyApp());
 }
 

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
+import 'package:la_boutique_de_a_y_s_app/models/user.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/auth/forget_password.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,8 +9,11 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import '../../provider/user_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   static const routeName = '/LoginScreen';
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -29,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _submitForm() async {
+    var sharedPreferences = UserPreferences();
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
@@ -37,12 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       _formKey.currentState.save();
       try {
-        await _auth
-            .signInWithEmailAndPassword(
-                email: _emailAddress.toLowerCase().trim(),
-                password: _password.trim())
-            .then((value) =>
-                Navigator.canPop(context) ? Navigator.pop(context) : null);
+        await _auth.signInWithEmailAndPassword(
+            email: _emailAddress.toLowerCase().trim(),
+            password: _password.trim());
+        var _uid = _auth.currentUser.uid;
+        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+
+        if (documentSnapshot != null && Navigator.canPop(context)){
+          UserModel userModel = UserModel.fromDocumentSnapshot(documentSnapshot);
+          //sharedPreferences.saveMap(userModel.id, userModel.toJson()); //TODO ver si aca no hacemos nada y en lugar cargamos prefernecias de este usuario en general, VER TIMESTAMP
+          sharedPreferences.user = userModel.id;
+          Navigator.pop(context);
+        }
       } catch (error) {
         _globalMethods.authErrorHandle(error.message, context);
         print('error occured ${error.message}');
@@ -180,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context, ForgetPassword.routeName);
                                 },
                                 child: Text(
-                                  'Forget password?',
+                                  'Olvidaste la contraseña?',
                                   style: TextStyle(
                                       color: Colors.blue.shade900,
                                       decoration: TextDecoration.underline),

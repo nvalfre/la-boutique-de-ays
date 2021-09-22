@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
+import 'package:la_boutique_de_a_y_s_app/models/enum/user_role.dart';
+import 'package:la_boutique_de_a_y_s_app/models/enum/user_status.dart';
+import 'package:la_boutique_de_a_y_s_app/models/user.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -68,15 +70,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           final _uid = user.uid;
           user.updateProfile(photoURL: url, displayName: _fullName);
           user.reload();
-          await FirebaseFirestore.instance.collection('users').doc(_uid).set({
-            'id': _uid,
-            'name': _fullName,
-            'email': _emailAddress,
-            'phoneNumber': _phoneNumber,
-            'imageUrl': url,
-            'joinedAt': formattedDate,
-            'createdAt': Timestamp.now(),
-          });
+          await FirebaseFirestore.instance.collection('users').doc(_uid).set(newUser( _uid,
+              _fullName,
+              _emailAddress,
+              UserRole.BUYER.toString(),
+              UserStatus.NEW.toString(),
+              _phoneNumber.toString(),
+              url,
+              formattedDate,
+              Timestamp.now()).toJson());
           Navigator.canPop(context) ? Navigator.pop(context) : null;
         }
       } catch (error) {

@@ -63,7 +63,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Forget password',
+              'Olvidaste la contraseña',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
