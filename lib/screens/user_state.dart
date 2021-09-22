@@ -14,45 +14,58 @@ class UserState extends StatelessWidget {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final users = FirebaseFirestore.instance.collection('users');
 
-    var _uid = _auth.currentUser.uid;
+    var _uid = _auth.currentUser?.uid;
 
     return StreamBuilder(
         stream: _auth.authStateChanges(),
-        // ignore: missing_return
         builder: (context, authSnapshot) {
           if (authSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child:  CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor),
               ),
             );
           } else if (authSnapshot.connectionState == ConnectionState.active) {
-            return FutureBuilder(
-                future: users.doc(_uid).get(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> userDocumentSnapshot) {
-                  UserPreferences sharedPreferences = UserPreferences();
-                  if (userDocumentSnapshot.hasData) {
-                    loadPreferences(userDocumentSnapshot.data, sharedPreferences);
-                    if (authSnapshot.hasData) {
-                      print('The user is already logged in');
-                      return MainScreens();
-                    } else {
-                      print('The user didn\'t login yet');
-                      return LandingPage();
-                    }
-                  } else {
-                    return CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-                    );
-                  }
-                }
-            );
+            return _uid != null
+                ? FutureBuilder(
+                    future: users.doc(_uid).get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> userDocumentSnapshot) {
+                      UserPreferences sharedPreferences = UserPreferences();
+                      if (userDocumentSnapshot.hasData) {
+                        loadPreferences(
+                            userDocumentSnapshot.data, sharedPreferences);
+                        return loadMainPages(authSnapshot);
+                      } else {
+                        return CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).primaryColor),
+                        );
+                      }
+                    })
+                : loadMainPages(authSnapshot);
           } else if (authSnapshot.hasError) {
             return Center(
               child: Text('Error occured'),
             );
+          } else {
+            return CircularProgressIndicator(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            );
           }
         });
+  }
+
+  Widget loadMainPages(AsyncSnapshot<dynamic> authSnapshot) {
+    if (authSnapshot.hasData) {
+      print('The user is already logged in');
+      return MainScreens();
+    } else {
+      print('The user didn\'t login yet');
+      return LandingPage();
+    }
   }
 
   void loadPreferences(
