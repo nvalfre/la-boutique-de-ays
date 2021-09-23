@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/inner_screens/brands_navigation_rail.dart';
 import 'package:la_boutique_de_a_y_s_app/models/product.dart';
+import 'package:la_boutique_de_a_y_s_app/models/user.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/orders_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/products.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
-import 'package:la_boutique_de_a_y_s_app/widget/backlayer.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/backlayer_admin.dart';
+import 'package:la_boutique_de_a_y_s_app/widget/backlayer_user.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/category.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/popular_products.dart';
 import 'package:backdrop/app_bar.dart';
@@ -38,201 +42,251 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
     final UserPreferences userPreferences = UserPreferences();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    return FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(_auth.currentUser.uid)
+            .get(),
+        builder: (context, snapshot) {
+          if (_auth.currentUser.isAnonymous) {
+            return buildScaffoldUser(context, userPreferences, productsData);
+          } else if (snapshot.hasData) {
+            UserModel userModel = UserModel.fromDocumentSnapshot(snapshot.data);
+            userPreferences.loadUser(userModel);
+
+            return buildScaffoldAdmin(context, userPreferences, productsData);
+          }
+          return CircularProgressIndicator();
+        });
+  }
+
+  Scaffold buildScaffoldAdmin(BuildContext context,
+      UserPreferences userPreferences, Products productsData) {
     return Scaffold(
       body: BackdropScaffold(
         frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
         headerHeight: MediaQuery.of(context).size.height * 0.40,
-        appBar: BackdropAppBar(
-          title: Center(child: Text('La boutique de AyS')),
-          leading: BackdropToggleButton(icon: AnimatedIcons.home_menu),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              ColorsConsts.starterColor,
-              ColorsConsts.endColor
-            ])),
-          ),
-          actions: <Widget>[
-            IconButton(
-              iconSize: 15,
-              padding: const EdgeInsets.all(10),
-              icon: CircleAvatar(
-                radius: 15,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 13,
-                  backgroundImage: NetworkImage(userPreferences.imageUrl),
-              ),),
-              onPressed: () {},
-            )
-          ],
-        ),
-        backLayer: BackLayerMenu(),
-        frontLayer: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildLandingCarousel(),
-              buildPopularProducts(context, productsData),
-              buildCategories(),
-              buildBrands(context),
-            ],
-          ),
-        ),
+        appBar: buildBackdropAppBar(userPreferences),
+        backLayer: BackLayerMenuAdmin(),
+        frontLayer: buildFrontLayerSingleChildScrollView(context, productsData),
       ),
     );
   }
 
+  SingleChildScrollView buildFrontLayerSingleChildScrollView(BuildContext context, Products productsData) {
+    return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildLandingCarousel(),
+            buildPopularProducts(context, productsData),
+            buildCategories(),
+            buildBrands(context),
+          ],
+        ),
+      );
+  }
+
+  Scaffold buildScaffoldUser(BuildContext context,
+      UserPreferences userPreferences, Products productsData) {
+    return Scaffold(
+      body: BackdropScaffold(
+        frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        headerHeight: MediaQuery.of(context).size.height * 0.40,
+        appBar: buildBackdropAppBar(userPreferences),
+        backLayer: BackLayerMenuUser(),
+        frontLayer: buildFrontLayerSingleChildScrollView(context, productsData),
+      ),
+    );
+  }
+
+  BackdropAppBar buildBackdropAppBar(UserPreferences userPreferences) {
+    return BackdropAppBar(
+        title: getTitle(),
+        leading: BackdropToggleButton(icon: AnimatedIcons.home_menu),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+            ColorsConsts.starterColor,
+            ColorsConsts.endColor
+          ])),
+        ),
+        actions: <Widget>[
+          IconButton(
+            iconSize: 15,
+            padding: const EdgeInsets.all(10),
+            icon: CircleAvatar(
+              radius: 15,
+              backgroundColor: Colors.white,
+              child: CircleAvatar(
+                radius: 13,
+                backgroundImage: NetworkImage(userPreferences.imageUrl),
+              ),
+            ),
+            onPressed: () {},
+          )
+        ],
+      );
+  }
+
+  Center getTitle() => Center(child: Text('La boutique de AyS'));
+
   Container buildLandingCarousel() {
     return Container(
-              height: 190.0,
-              width: double.infinity,
-              child: Carousel(
-                boxFit: BoxFit.cover,
-                //boxFit: BoxFit.fill,
-                autoplay: true,
-                animationCurve: Curves.fastOutSlowIn,
-                animationDuration: Duration(milliseconds: 1000),
-                dotSize: 5.0,
-                dotIncreasedColor: Colors.purple,
-                dotBgColor: Colors.black.withOpacity(0.2),
-                dotPosition: DotPosition.bottomCenter,
-                showIndicator: true,
-                indicatorBgPadding: 5.0,
-                images: [
-                  ExactAssetImage(_carouselImages[0]),
-                  ExactAssetImage(_carouselImages[1]),
-                  ExactAssetImage(_carouselImages[2]),
-                  ExactAssetImage(_carouselImages[3]),
-                ],
-              ),
-            );
+      height: 190.0,
+      width: double.infinity,
+      child: Carousel(
+        boxFit: BoxFit.cover,
+        //boxFit: BoxFit.fill,
+        autoplay: true,
+        animationCurve: Curves.fastOutSlowIn,
+        animationDuration: Duration(milliseconds: 1000),
+        dotSize: 5.0,
+        dotIncreasedColor: Colors.purple,
+        dotBgColor: Colors.black.withOpacity(0.2),
+        dotPosition: DotPosition.bottomCenter,
+        showIndicator: true,
+        indicatorBgPadding: 5.0,
+        images: [
+          ExactAssetImage(_carouselImages[0]),
+          ExactAssetImage(_carouselImages[1]),
+          ExactAssetImage(_carouselImages[2]),
+          ExactAssetImage(_carouselImages[3]),
+        ],
+      ),
+    );
   }
 
   Column buildBrands(BuildContext context) {
-    return Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Marcas populares',
-                      style:
-                      TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-                    ),
-                    Spacer(),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          BrandNavigationRailScreen.routeName,
-                          arguments: {
-                            7,
-                          },
-                        );
-                      },
-                      child: Text(
-                        'Ver más',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 15,
-                            color: Colors.red),
-                      ),
-                    )
-                  ],
-                ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Text(
+                'Marcas populares',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
               ),
-              Container(
-                height: 210,
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: Swiper(
-                  itemCount: _brandImages.length,
-                  autoplay: true,
-                  viewportFraction: 0.8,
-                  scale: 0.9,
-                  onTap: (index) {
-                    Navigator.of(context).pushNamed(
-                      BrandNavigationRailScreen.routeName,
-                      arguments: {
-                        index,
-                      },
-                    );
-                  },
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        color: Colors.blueGrey,
-                        child: Image.asset(
-                          _brandImages[index],
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    );
-                  },
+              Spacer(),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    BrandNavigationRailScreen.routeName,
+                    arguments: {
+                      7,
+                    },
+                  );
+                },
+                child: Text(
+                  'Ver más',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: Colors.red),
                 ),
               )
-            ],);
+            ],
+          ),
+        ),
+        Container(
+          height: 210,
+          width: MediaQuery.of(context).size.width * 0.95,
+          child: Swiper(
+            itemCount: _brandImages.length,
+            autoplay: true,
+            viewportFraction: 0.8,
+            scale: 0.9,
+            onTap: (index) {
+              Navigator.of(context).pushNamed(
+                BrandNavigationRailScreen.routeName,
+                arguments: {
+                  index,
+                },
+              );
+            },
+            itemBuilder: (BuildContext ctx, int index) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  color: Colors.blueGrey,
+                  child: Image.asset(
+                    _brandImages[index],
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              );
+            },
+          ),
+        )
+      ],
+    );
   }
 
   Column buildCategories() {
-    return Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Categorías',
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 180,
-                child: ListView.builder(
-                  itemCount: categories.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return CategoryWidget(
-                      index: index,
-                    );
-                  },
-                ),
-              )
-            ],);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Categorías',
+            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          height: 180,
+          child: ListView.builder(
+            itemCount: categories.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext ctx, int index) {
+              return CategoryWidget(
+                index: index,
+              );
+            },
+          ),
+        )
+      ],
+    );
   }
 
   Column buildPopularProducts(BuildContext context, Products productsData) {
-    return Column(children: [Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Productos populares',
-                    style:
-                    TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-                  ),
-                  Spacer(),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Marketplace.routeName,
-                          arguments: 'popular');
-                    },
-                    child: Text(
-                      'Ver más',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 15,
-                          color: Colors.red),
-                    ),
-                  )
-                ],
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Text(
+                'Productos populares',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
               ),
-            ),
-              FutureBuilder(
-                future: productsData.fetchProductsList(),
-                initialData: productsData.products,
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Product>> snapshot) {
-                  return snapshot.hasData
-                      ? Container(
+              Spacer(),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(Marketplace.routeName, arguments: 'popular');
+                },
+                child: Text(
+                  'Ver más',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: Colors.red),
+                ),
+              )
+            ],
+          ),
+        ),
+        FutureBuilder(
+          future: productsData.fetchProductsList(),
+          initialData: productsData.products,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+            return snapshot.hasData
+                ? Container(
                     width: double.infinity,
                     height: 285,
                     margin: EdgeInsets.symmetric(horizontal: 3),
@@ -246,11 +300,13 @@ class _HomeState extends State<Home> {
                           );
                         }),
                   )
-                      : CircularProgressIndicator(
+                : CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
                         Theme.of(context).primaryColor),
                   );
-                },
-              ),],);
+          },
+        ),
+      ],
+    );
   }
 }

@@ -13,6 +13,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:la_boutique_de_a_y_s_app/widget/feeds_dialog.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class UploadProductForm extends StatefulWidget {
   static const routeName = '/UploadProductForm';
@@ -571,20 +572,22 @@ class GradientIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
+    var innerIcon = Icon(
+      icon,
+      size: size,
+      color: Colors.pink,
+    );
+    return (!kIsWeb) ?
+     ShaderMask(
       child: SizedBox(
         width: size * 1.2,
         height: size * 1.2,
-        child: Icon(
-          icon,
-          size: size,
-          color: Colors.white,
-        ),
+        child: innerIcon,
       ),
       shaderCallback: (Rect bounds) {
         final Rect rect = Rect.fromLTRB(0, 0, size, size);
         return gradient.createShader(rect);
       },
-    );
+    ) :  innerIcon;
   }
 }

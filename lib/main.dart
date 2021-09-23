@@ -21,6 +21,7 @@ import 'screens/auth/sign_up.dart';
 import 'screens/top_app_bar.dart';
 import 'screens/cart/cart.dart';
 import 'screens/feeds.dart';
+import 'screens/user_info.dart';
 import 'screens/user_state.dart';
 
 void main() async {
@@ -119,6 +120,7 @@ class _MyAppState extends State<MyApp> {
                     ForgetPassword.routeName: (ctx) => ForgetPassword(),
                     OrderScreen.routeName: (ctx) => OrderScreen(),
                     Search.routeName: (ctx) => Search(),
+                    UserInfo.routeName: (ctx) => UserInfo(),
                   },
                 );
               },
