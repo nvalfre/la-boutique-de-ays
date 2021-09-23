@@ -17,12 +17,12 @@ class _FeedProductsState extends State<FeedProducts> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
 
-    final productsAttributes = Provider.of<Product>(context);
+    final productAttributes = Provider.of<Product>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, ProductDetails.routeName,
-            arguments: productsAttributes.id),
+            arguments: productAttributes.id),
         child: Container(
           width: 200,
           height: 200,
@@ -41,7 +41,7 @@ class _FeedProductsState extends State<FeedProducts> {
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height * 0.3,
                           child: Image.network(
-                            productsAttributes.imageUrl,
+                            productAttributes.imageUrl,
                             //   fit: BoxFit.fitWidth,
                           ),
                         ),
@@ -76,7 +76,7 @@ class _FeedProductsState extends State<FeedProducts> {
                         height: 4,
                       ),
                       Text(
-                        productsAttributes.description,
+                        productAttributes.description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
@@ -87,7 +87,7 @@ class _FeedProductsState extends State<FeedProducts> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          '\$ ${productsAttributes.price}',
+                          '\$ ${productAttributes.price}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: TextStyle(
@@ -100,7 +100,7 @@ class _FeedProductsState extends State<FeedProducts> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Disponibles ${productsAttributes.quantity}',
+                            'Disponibles ${productAttributes.quantity}',
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
@@ -113,7 +113,7 @@ class _FeedProductsState extends State<FeedProducts> {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) => FeedDialog(
-                                      productId: productsAttributes.id,
+                                      productId: productAttributes.id,
                                     ),
                                   );
                                 },
