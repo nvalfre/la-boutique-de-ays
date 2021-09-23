@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
+
   @override
   void dispose() {
     _passwordFocusNode.dispose();
@@ -35,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _submitForm() async {
-    UserPreferences sharedPreferences = UserPreferences();
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
@@ -44,19 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       _formKey.currentState.save();
       try {
-        await _auth.signInWithEmailAndPassword(
-            email: _emailAddress.toLowerCase().trim(),
-            password: _password.trim());
-        var _uid = _auth.currentUser.uid;
-        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(_uid).get();
-
-        if (documentSnapshot != null && Navigator.canPop(context)){
-          UserModel userModel = UserModel.fromDocumentSnapshot(documentSnapshot);
-          sharedPreferences.user = userModel.id;
-          sharedPreferences.userRole = userModel.userRole;
-          sharedPreferences.imageUrl = userModel.imageUrl;
-          Navigator.pop(context);
-        }
+        await _auth
+            .signInWithEmailAndPassword(
+                email: _emailAddress.toLowerCase().trim(),
+                password: _password.trim())
+            .then((value) =>
+                Navigator.canPop(context) ? Navigator.pop(context) : null);
       } catch (error) {
         _globalMethods.authErrorHandle(error.message, context);
         print('error occured ${error.message}');
@@ -225,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'Login',
+                                          'Iniciar sesión',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 17),

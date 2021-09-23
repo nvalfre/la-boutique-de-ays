@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
 import 'package:la_boutique_de_a_y_s_app/models/enum/user_role.dart';
+import 'package:la_boutique_de_a_y_s_app/models/user.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/upload_product_form.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/cart/cart.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/feeds.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BackLayerMenu extends StatefulWidget {
   @override
@@ -106,7 +108,9 @@ class _BackLayerMenuState extends State<BackLayerMenu> {
                     height: 80,
                     width: 80,
                     decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme
+                            .of(context)
+                            .backgroundColor,
                         borderRadius: BorderRadius.circular(50.0)),
                     child: Container(
                       decoration: BoxDecoration(
@@ -140,13 +144,42 @@ class _BackLayerMenuState extends State<BackLayerMenu> {
     );
   }
 
-  Widget uploadProductAdmin(
-      final UserPreferences userPreferences, BuildContext context) {
-    return userPreferences.userRole == UserRole.ADMIN.toString()
-        ? content(context, () {
-            navigateTo(context, UploadProductForm.routeName);
-          }, 'Subir nuevo producto', 3)
-        : const SizedBox(height: 5.0);
+  Widget uploadProductAdmin(final UserPreferences userPreferences,
+      BuildContext context) {
+    UserPreferences sharedPreferences = UserPreferences();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final sizedBox = const SizedBox(height: 5.0);
+    if(_auth.currentUser.isAnonymous) {
+      sharedPreferences.userRole = UserRole.GUEST.toString();
+      return sizedBox;
+    }
+    if(sharedPreferences.isLoadedAdmin()) {
+      return uploadProductContent();
+    }
+    //actually is the unique and the one of the first componentes,
+    // evaluate move this function into first render components.
+    return FutureBuilder(
+        future: FirebaseFirestore.instance.collection('users').doc(_auth.currentUser.uid).get(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            UserModel userModel = UserModel.fromDocumentSnapshot(snapshot.data);
+            sharedPreferences.loadUser(userModel);
+
+            if(sharedPreferences.isLoadedAdmin()) {
+              return uploadProductContent();
+            } else {
+              return sizedBox;
+            }
+          } else {
+            return sizedBox;
+          }
+        });
+  }
+
+  Widget uploadProductContent(){
+    return content(context, () {
+      navigateTo(context, UploadProductForm.routeName);
+    }, 'Subir nuevo producto', 3);
   }
 
   List _contentIcons = [

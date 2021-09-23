@@ -8,13 +8,15 @@ import 'package:provider/provider.dart';
 import 'landing_page.dart';
 import 'main_screen.dart';
 
-class UserState extends StatelessWidget {
+class UserState extends StatefulWidget {
+  @override
+  _UserStateState createState() => _UserStateState();
+}
+
+class _UserStateState extends State<UserState> {
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final users = FirebaseFirestore.instance.collection('users');
-
-    var _uid = _auth.currentUser?.uid;
 
     return StreamBuilder(
         stream: _auth.authStateChanges(),
@@ -27,24 +29,7 @@ class UserState extends StatelessWidget {
               ),
             );
           } else if (authSnapshot.connectionState == ConnectionState.active) {
-            return _uid != null
-                ? FutureBuilder(
-                    future: users.doc(_uid).get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> userDocumentSnapshot) {
-                      UserPreferences sharedPreferences = UserPreferences();
-                      if (userDocumentSnapshot.hasData) {
-                        loadPreferences(
-                            userDocumentSnapshot.data, sharedPreferences);
-                        return loadMainPages(authSnapshot);
-                      } else {
-                        return CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor),
-                        );
-                      }
-                    })
-                : loadMainPages(authSnapshot);
+            return loadMainPages(authSnapshot);
           } else if (authSnapshot.hasError) {
             return Center(
               child: Text('Error occured'),

@@ -3,4 +3,5 @@ enum UserRole {
   SELLER,
   BUYER,
   GUEST,
+  WAITING,
 }

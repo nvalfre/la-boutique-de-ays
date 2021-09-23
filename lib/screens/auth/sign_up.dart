@@ -4,6 +4,7 @@ import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/models/enum/user_role.dart';
 import 'package:la_boutique_de_a_y_s_app/models/enum/user_status.dart';
 import 'package:la_boutique_de_a_y_s_app/models/user.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/mime_type_image_provider.dart';
 import 'package:la_boutique_de_a_y_s_app/services/global_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   int _phoneNumber;
   File _pickedImage;
   String url;
+  final _imageProvider = new MimeTypeImageProvider();
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GlobalMethods _globalMethods = GlobalMethods();
@@ -52,33 +54,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (isValid) {
       _formKey.currentState.save();
       try {
-        if (true){
+        if (_pickedImage == null) {
+          _globalMethods.authErrorHandle('Porfavor elige una imagen', context);
+        } else {
           setState(() {
             _isLoading = true;
           });
-          // final ref = FirebaseStorage.instance
-          //     .ref()
-          //     .child('usersImages')
-          //     .child(_fullName + '.jpg');
-          // await ref.putFile(_pickedImage);
-          // url = await ref.getDownloadURL();
-          url = "https://www.xlsemanal.com/wp-content/uploads/sites/3/2017/03/yoga-relax-1024x684.jpg";
+          url = await _imageProvider.uploadImage(_pickedImage);
           await _auth.createUserWithEmailAndPassword(
               email: _emailAddress.toLowerCase().trim(),
               password: _password.trim());
           final User user = _auth.currentUser;
           final _uid = user.uid;
-          user.updateProfile(photoURL: url, displayName: _fullName);
+          user.updateDisplayName(_fullName);
+          user.updatePhotoURL(url);
           user.reload();
-          await FirebaseFirestore.instance.collection('users').doc(_uid).set(newUser( _uid,
-              _fullName,
-              _emailAddress,
-              UserRole.BUYER.toString(),
-              UserStatus.NEW.toString(),
-              _phoneNumber.toString(),
-              url,
-              formattedDate,
-              Timestamp.now()).toJson());
+          await FirebaseFirestore.instance.collection('users').doc(_uid).set(newUser( id: _uid,
+              name: _fullName,
+              email: _emailAddress,
+              userStatus: UserStatus.NEW.toString(),
+              userRole: UserRole.BUYER.toString(),
+              imageUrl: url,
+              phoneNumber: _phoneNumber.toString(),
+              joinedAt: formattedDate,
+              createdAt: Timestamp.now()).toJson());
           Navigator.canPop(context) ? Navigator.pop(context) : null;
         }
       } catch (error) {

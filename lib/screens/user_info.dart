@@ -1,6 +1,7 @@
 import 'package:la_boutique_de_a_y_s_app/consts/colors.dart';
 import 'package:la_boutique_de_a_y_s_app/consts/my_icons.dart';
 import 'package:la_boutique_de_a_y_s_app/provider/dark_theme_provider.dart';
+import 'package:la_boutique_de_a_y_s_app/provider/user_preferences.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/cart/cart.dart';
 import 'package:la_boutique_de_a_y_s_app/screens/wishlist/wishlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,12 +22,14 @@ class _UserInfoState extends State<UserInfo> {
   ScrollController _scrollController;
   var top = 0.0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserPreferences _userPreferences = UserPreferences();
   String _uid;
   String _name;
   String _email;
   String _joinedAt;
   String _userImageUrl;
-  int _phoneNumber;
+  String _phoneNumber;
+
   @override
   void initState() {
     super.initState();
@@ -52,9 +55,9 @@ class _UserInfoState extends State<UserInfo> {
       setState(() {
         _name = userDoc.get('name');
         _email = user.email;
-        _joinedAt = userDoc.get('joinedAt');
-        _phoneNumber = userDoc.get('phoneNumber');
-        _userImageUrl = userDoc.get('imageUrl');
+        _joinedAt = userDoc.get('joined_at');
+        _phoneNumber = userDoc.get('phone_number');
+        _userImageUrl = userDoc.get('image_url');
       });
     }
     // print("name $_name");
@@ -188,10 +191,11 @@ class _UserInfoState extends State<UserInfo> {
                       color: Colors.grey,
                     ),
                     userListTile('Email', _email ?? '', 0, context),
-                    userListTile('Teléfono', _phoneNumber.toString() ?? '',
-                        1, context),
+                    userListTile(
+                        'Teléfono', _phoneNumber.toString() ?? '', 1, context),
                     //userListTile('Shipping address', '', 2, context),
-                    userListTile('Fecha de ingreso', _joinedAt ?? '', 3, context),
+                    userListTile(
+                        'Fecha de ingreso', _joinedAt ?? '', 3, context),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: userTitle(title: 'Configuración de Usuario'),
@@ -250,9 +254,9 @@ class _UserInfoState extends State<UserInfo> {
                                           child: Text('Cancelar')),
                                       TextButton(
                                           onPressed: () async {
-                                            await _auth.signOut().then(
-                                                (value) =>
-                                                    Navigator.pop(context));
+                                            await _auth.signOut();
+                                            _userPreferences.clear();
+                                            Navigator.pop(context);
                                           },
                                           child: Text(
                                             'Ok',
